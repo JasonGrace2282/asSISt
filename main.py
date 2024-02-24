@@ -4,7 +4,17 @@ import customtkinter as ctk
 class App(ctk.CTk):
     def __init__(self) -> None:
         super().__init__()
-        # code goes here
+
+
+
+        greeting = ctk.CTkLabel(self,text="Hello, Tkinter")
+        greeting.pack()
+
+
+
+
+
+        
 
 
 
