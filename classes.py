@@ -1,25 +1,19 @@
 from dataclasses import dataclass
-from enum import Enum
-
-
-class Direction(Enum):
-    NORTH = "north"
-    SOUTH = "south"
-    EAST = "east"
-    WEST = "west"
 
 
 @dataclass
-class House:
-    length: int
-    width: int
-    coordinate: tuple[int, int]
-    direction: Direction
+class Assignment:
+    points: int
+    possible_points: int
+    graded: bool
 
 
 @dataclass
-class Plot:
-    houses: list[House]
-    length: int
-    width: int
-    roads: list[tuple[int, int, int]]
+class Subject:
+    grades: list[Assignment]
+
+
+@dataclass
+class Account:
+    name: str
+    subjects: list[Subject]
