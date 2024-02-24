@@ -19,8 +19,17 @@ class App(ctk.CTk):
 
         username, passwd, domain = self.auth()
         self.mainloop()
-        account = login(username.get(), passwd.get(), domain.get())
-        print(account)
+        while not (username.get() and passwd.get() and domain.get()):
+            username, passwd, domain = self.auth()
+            self.mainloop()
+
+        self.account = login(
+            username.get(),
+            passwd.get(),
+            domain.get() if domain.get() else "sisstudent.fcps.edu/SVUE"
+        )
+        self.choose_classes()
+
 
     def get_entry(
         self,
@@ -67,6 +76,9 @@ class App(ctk.CTk):
 
         return outputs
 
+
+    def choose_classes(self) -> None:
+        ctk.CTkLabel(self, text="hi").pack()
 
 def main():
     ctk.set_appearance_mode("dark")
