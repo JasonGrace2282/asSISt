@@ -1,43 +1,36 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 
 __all__ = [
     "Subject",
     "Account",
-    "SimulatedAssignment",
-    "Weighting"
+    "SimulatedAssignment"
 ]
 
 
 @dataclass
 class Weight:
-    percent: float
     points: float
     points_possible: float
-
-
-@dataclass
-class Weighting:
-    is_weighted: bool
-    weighting: dict[str, Weight] = field(default_factory=dict)
-
-    def __bool__(self) -> bool:
-        return self.is_weighted
+    percent: float
+    name: str = "Unweighted"
 
 
 @dataclass
 class SimulatedAssignment:
-    points: float
-    percent: float
-    weighting: Weighting
+    assignment_weight: Weight
 
 
 @dataclass
 class Subject:
-    points: float
-    points_possible: float
-    weighting: Weighting
-    final_grade: float
+    weights: list[Weight]
+
+    @property
+    def final_grade(self) -> float:
+        return sum(
+            (weight.points / weight.points_possible) * weight.percent
+            for weight in self.weights
+        )
 
 
 @dataclass

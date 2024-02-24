@@ -1,5 +1,5 @@
 from studentvue import StudentVue
-from backend.classes import Account, Subject, Weighting, Weight
+from backend.classes import Account, Subject, Weight
 from collections import OrderedDict
 
 
@@ -7,7 +7,7 @@ def login(username: str, password: str, domain: str) -> Account:
     account = check_account_success(username, password, domain)
     # convert courses to list of Subjects
     courses = account["Courses"]["Course"]
-    for idx, course in enumerate(courses):
+    for idx, _ in enumerate(courses):
         courses[idx] = parse_subjects(account, idx)
     account = Account(
         username,
@@ -31,23 +31,20 @@ def check_account_success(
         raise RuntimeError("Oops, an error occurred with logging in") from e
 
 
-def parse_class(weight, weights: Weighting) -> Subject | None:
+def parse_class(weight: dict, weights: list[Weight]) -> Subject | None:
+    if weight["@Type"] == "TOTAL":
+        return Subject(weights)
+
     points = weight["@Points"]
     total_points = weight["@PointsPossible"]
-    if weight["@Type"] == "TOTAL":
-        return Subject(
+    weights.append(
+        Weight(
+            int(weight["@Weight"][:-1])/100,  # PERCENT weightage
             points,
             total_points,
-            final_grade=points/total_points,
-            weighting=weights
+            name=weight["@Type"]
         )
-
-    weights.weighting[weight["@Type"]] = Weight(
-        weight["@Weight"],
-        points,
-        total_points
     )
-    return None
 
 
 def parse_unweighted(assignments: list[dict], subject: Subject) -> None:
@@ -59,9 +56,11 @@ def parse_unweighted(assignments: list[dict], subject: Subject) -> None:
             # parse stuff of form "3 / 4"
             assign["@Points"].replace(" ", "").split("/")
         )
-        subject.points += points
-        subject.points_possible = possible_points
-        subject.final_grade = subject.points / subject.points_possible
+        # Since it's unweighted it can be represented as a weight
+        # with percent=1
+        # So there is only one weight, hence weights[0]
+        subject.weights[0].points += points
+        subject.weights[0].points_possible += possible_points
 
 
 def parse_subjects(
@@ -71,20 +70,20 @@ def parse_subjects(
     courses = subjects["Courses"]["Course"][course_idx]
     marks = courses["Marks"]["Mark"]
     grading_scheme = marks["GradeCalculationSummary"]
-    # if it's weighted
+
     if grading_scheme:
-        weights = Weighting(is_weighted=True)
+        weights = []
         for weight in grading_scheme["AssignmentGradeCalc"]:
             # modify weights, if the total is reached return a Subject
             tmp = parse_class(weight, weights)
             if isinstance(tmp, Subject):
                 return tmp
-    else:
-        # not weighted, todo
-        subject = Subject(0, 0, Weighting(is_weighted=False), 0)
-        parse_unweighted(
-            marks["Assignments"]["Assignment"],  # type: ignore
-            subject
-        )
-        return subject
-    raise ValueError("Something went wrong?")
+        raise RuntimeError("Invalid Output from API")
+
+    # otherwise it isn't weighted
+    subject = Subject([Weight(0, 0, 1)])
+    parse_unweighted(
+        marks["Assignments"]["Assignment"],  # type: ignore
+        subject
+    )
+    return subject

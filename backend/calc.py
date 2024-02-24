@@ -1,14 +1,11 @@
-#Output is list of class 
-from backend.classes import Account, Weighting, SimulatedAssignment
+from backend.classes import SimulatedAssignment, Subject
 
-def calculate(account: Account, *news: SimulatedAssignment):
-    subjects = account.subjects
-    for sub in subjects:
-        if sub.weighting:
-            final = 0.0
-            for name, weight in sub.weighting:
-                final += (weight.points / weight.points_possible) * weight.percent
-            Account.Subject.final_grade = final
-        else:
-            Account.Subject.final_grade = Account.Subject.points / Account.Subject.points_possible
-    
+
+def calculate(sub: Subject, *simulations: SimulatedAssignment) -> None:
+    for sim in simulations:
+        assignment_weight = sim.assignment_weight
+        for idx, weight in enumerate(sub.weights):
+            if weight.name == assignment_weight.name:
+                weights = sub.weights[idx]
+                weights.points += assignment_weight.points
+                weights.points_possible += assignment_weight.points_possible
