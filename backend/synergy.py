@@ -1,13 +1,14 @@
 from studentvue import StudentVue
 from backend.classes import Account, Subject, Weighting, Weight
+from collections import OrderedDict
 
 
 def login(username: str, password: str, domain: str) -> Account:
     account = check_account_success(username, password, domain)
     # convert courses to list of Subjects
-    courses = account["Courses"]["Course"]  # type: ignore
+    courses = account["Courses"]["Course"]
     for idx, course in enumerate(courses):
-        courses[idx] = parse_subjects(course)
+        courses[idx] = parse_subjects(account, idx)
     account = Account(
         username,
         courses
@@ -19,9 +20,13 @@ def check_account_success(
         username: str,
         password: str,
         domain: str
-        ) -> StudentVue:
+        ) -> OrderedDict:
     try:
-        return StudentVue(username, password, domain)
+        return StudentVue(
+            username,
+            password,
+            domain
+        ).get_gradebook()["Gradebook"]
     except Exception as e:
         raise RuntimeError("Oops, an error occurred with logging in") from e
 
@@ -47,6 +52,8 @@ def parse_class(weight, weights: Weighting) -> Subject | None:
 
 def parse_unweighted(assignments: list[dict], subject: Subject) -> None:
     for assign in assignments:
+        if "Points Possible" in assign["@Points"]:
+            continue
         points, possible_points = map(
             int,
             # parse stuff of form "3 / 4"
@@ -57,9 +64,10 @@ def parse_unweighted(assignments: list[dict], subject: Subject) -> None:
         subject.final_grade = subject.points / subject.points_possible
 
 
-def parse_subjects(subjects: dict[str, list[dict]]) -> Subject:
-    marks = subjects["Marks"]
-    grading_scheme = marks["Mark"]["GradeCalculationSummary"]  # type: ignore
+def parse_subjects(subjects: dict[str, dict[str, dict]], course_idx: int) -> Subject:
+    courses = subjects["Courses"]["Course"][course_idx]
+    marks = courses["Marks"]["Mark"]
+    grading_scheme = marks["GradeCalculationSummary"]
     # if it's weighted
     if grading_scheme:
         weights = Weighting(is_weighted=True)
@@ -72,7 +80,8 @@ def parse_subjects(subjects: dict[str, list[dict]]) -> Subject:
         # not weighted, todo
         subject = Subject(0, 0, Weighting(is_weighted=False), 0)
         parse_unweighted(
-            subjects["Assignments"]["Assignment"],  # type: ignore
+            marks["Assignments"]["Assignment"],  # type: ignore
             subject
         )
+        return subject
     raise ValueError("Something went wrong?")
