@@ -17,11 +17,8 @@ class App(ctk.CTk):
                 )
         ).pack(pady=20)
 
-        username, passwd, domain = self. ()
+        username, passwd, domain = self.auth()
         self.mainloop()
-        while not username.get() or not passwd.get() or not domain.get():
-            username, passwd, domain = self.auth()
-            self.mainloop()
         account = login(username.get(), passwd.get(), domain.get())
         print(account)
 
@@ -47,7 +44,7 @@ class App(ctk.CTk):
     def auth(self):
         outputs = (
             self.get_entry(
-                "Enter StudentVUE Information:",
+                "Enter StudenVUE Information:",
                 "Username",
                 text_kwargs={"width": 300}
             ),
