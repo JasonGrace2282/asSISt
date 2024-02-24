@@ -1,4 +1,4 @@
-from dataclasses import dataclass, default_factory
+from dataclasses import dataclass, field
 
 
 __all__ = [
@@ -10,7 +10,14 @@ __all__ = [
 @dataclass
 class Weighting:
     is_weighted: bool
-    weighting: dict = default_factory(dict)
+    weighting: dict = field(default_factory=dict)
+
+
+@dataclass
+class SimulatedAssignment:
+    points: float
+    percent: float
+    weighting: Weighting
 
 
 @dataclass
