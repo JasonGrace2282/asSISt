@@ -1,6 +1,13 @@
 from dataclasses import dataclass
 
 
+__all__ = [
+    "Assignment",
+    "Subject",
+    "Account"
+]
+
+
 @dataclass
 class Assignment:
     points: int
