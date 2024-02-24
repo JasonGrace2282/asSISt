@@ -3,7 +3,9 @@ from dataclasses import dataclass, field
 
 __all__ = [
     "Subject",
-    "Account"
+    "Account",
+    "SimulatedAssignment",
+    "Weighting"
 ]
 
 
