@@ -17,7 +17,7 @@ class App(ctk.CTk):
                 )
         ).pack(pady=20)
 
-        username, passwd, domain = self.auth()
+        username, passwd, domain = self. ()
         self.mainloop()
         account = login(username.get(), passwd.get(), domain.get())
         print(account)
@@ -44,7 +44,7 @@ class App(ctk.CTk):
     def auth(self):
         outputs = (
             self.get_entry(
-                "Enter StudenVUE Information:",
+                "Enter StudentVUE Information:",
                 "Username",
                 text_kwargs={"width": 300}
             ),
