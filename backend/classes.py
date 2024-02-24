@@ -21,6 +21,9 @@ class Weighting:
     is_weighted: bool
     weighting: dict[str, Weight] = field(default_factory=dict)
 
+    def __bool__(self) -> bool:
+        return self.is_weighted
+
 
 @dataclass
 class SimulatedAssignment:
