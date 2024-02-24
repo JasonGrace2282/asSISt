@@ -6,7 +6,9 @@ class App(ctk.CTk):
         super().__init__()
 
 
+        usernamehead = ctk.CTkLabel(self,Text="Enter User name here")
         username = ctk.CTkEntry(self, width=300)
+        usernamehead.pack()
         username.pack()
 
 
