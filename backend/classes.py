@@ -37,6 +37,7 @@ class Subject:
     points: float
     points_possible: float
     weighting: Weighting
+    final_grade: float
 
 
 @dataclass
