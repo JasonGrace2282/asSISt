@@ -1,4 +1,5 @@
 import customtkinter as ctk
+from backend import login
 
 
 class App(ctk.CTk):
@@ -17,6 +18,9 @@ class App(ctk.CTk):
         ).pack(pady=20)
 
         username, passwd, domain = self.auth()
+        self.mainloop()
+        account = login(username.get(), passwd.get(), domain.get())
+        print(account)
 
     def get_entry(
         self,
@@ -55,14 +59,18 @@ class App(ctk.CTk):
                 text_kwargs={"width": 300}
             )
         )
-        ctk.CTkButton(self, text="Authenticate").pack(pady=20)
+        ctk.CTkButton(
+            self,
+            text="Authenticate",
+            command=self.quit
+        ).pack(pady=20)
 
         return outputs
 
 
 def main():
     ctk.set_appearance_mode("dark")
-    App().mainloop()
+    App()
 
 
 if __name__ == "__main__":

@@ -64,7 +64,10 @@ def parse_unweighted(assignments: list[dict], subject: Subject) -> None:
         subject.final_grade = subject.points / subject.points_possible
 
 
-def parse_subjects(subjects: dict[str, dict[str, dict]], course_idx: int) -> Subject:
+def parse_subjects(
+    subjects: dict[str, dict[str, dict]],
+    course_idx: int
+) -> Subject:
     courses = subjects["Courses"]["Course"][course_idx]
     marks = courses["Marks"]["Mark"]
     grading_scheme = marks["GradeCalculationSummary"]
@@ -85,5 +88,3 @@ def parse_subjects(subjects: dict[str, dict[str, dict]], course_idx: int) -> Sub
         )
         return subject
     raise ValueError("Something went wrong?")
-
-def parse_
