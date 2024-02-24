@@ -1,23 +1,23 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, default_factory
 
 
 __all__ = [
-    "Assignment",
     "Subject",
     "Account"
 ]
 
 
 @dataclass
-class Assignment:
-    points: int
-    possible_points: int
-    graded: bool
+class Weighting:
+    is_weighted: bool
+    weighting: dict = default_factory(dict)
 
 
 @dataclass
 class Subject:
-    grades: list[Assignment]
+    points: float
+    points_possible: float
+    weighting: Weighting
 
 
 @dataclass
