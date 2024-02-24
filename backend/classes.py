@@ -10,9 +10,16 @@ __all__ = [
 
 
 @dataclass
+class Weight:
+    percent: float
+    points: float
+    points_possible: float
+
+
+@dataclass
 class Weighting:
     is_weighted: bool
-    weighting: dict = field(default_factory=dict)
+    weighting: dict[str, Weight] = field(default_factory=dict)
 
 
 @dataclass
