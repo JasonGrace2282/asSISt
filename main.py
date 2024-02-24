@@ -6,15 +6,14 @@ class App(ctk.CTk):
         super().__init__()
 
 
-
-        greeting = ctk.CTkLabel(self,text="Hello, Tkinter")
-        greeting.pack()
-
+        username = ctk.CTkEntry(self, width=300)
+        username.pack()
 
 
 
 
-        
+
+
 
 
 
