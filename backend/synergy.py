@@ -1,5 +1,5 @@
 from studentvue import StudentVue
-from backend.classes import Account, Subject
+from backend.classes import Account, Subject, Weighting, Weight
 
 
 def login(username: str, password: str, domain: str) -> None:
@@ -18,12 +18,29 @@ def check_account_success(username: str, password: str, domain: str) -> StudentV
     return StudentVue(username, password, domain)
 
 
+def parse_class(weight, weights: Weighting) -> Subject | None:
+    points = weight["@Points"]
+    total_points = weight["@PointsPossible"]
+    if weight["@Type"] == "TOTAL":
+        return Subject(points, total_points, weighting=weights)
+
+    weights.weighting[weight["@Type"]] = Weight(
+        weight["@Weight"],
+        points,
+        total_points
+    )
+    return None
+
+
 def parse_subjects(subjects: dict[str, list[dict]]) -> Subject:
     marks = subjects["Marks"]
     grading_scheme = marks["Mark"]["GradeCalculationSummary"]
-    for weight in grading_scheme["AssignmentGradeCalc"]:
-        if weight["@Type"] == "TOTAL":
-            points = weight["@Points"]
-            total_points = weight["@PointsPossible"]
-            return Subject(points, total_points)
+    if grading_scheme:
+        weights = Weighting(is_weighted=True)
+        for weight in grading_scheme["AssignmentGradeCalc"]:
+            tmp = parse_class(weight)
+            if tmp is not None:
+                return tmp
+        else:
+        pass # TODO
     raise ValueError("Something went wrong?")
