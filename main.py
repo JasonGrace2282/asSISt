@@ -19,6 +19,9 @@ class App(ctk.CTk):
 
         username, passwd, domain = self. ()
         self.mainloop()
+        while not username.get() or not passwd.get() or not domain.get():
+            username, passwd, domain = self.auth()
+            self.mainloop()
         account = login(username.get(), passwd.get(), domain.get())
         print(account)
 
@@ -51,7 +54,7 @@ class App(ctk.CTk):
             self.get_entry(
                 placeholder_text="Password",
                 label=False,
-                text_kwargs={"width": 300}
+                text_kwargs={"width": 300, "show": "*"}
             ),
             self.get_entry(
                 placeholder_text="Domain (ex: sisstudent.fcps.edu/SVUE)",
