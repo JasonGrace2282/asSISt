@@ -51,3 +51,5 @@ def parse_subjects(subjects: dict[str, list[dict]]) -> Subject:
         # not weighted, todo
         pass
     raise ValueError("Something went wrong?")
+
+def parse_
