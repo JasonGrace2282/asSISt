@@ -1,0 +1,16 @@
+import customtkinter as ctk
+number = ctk.CTkLabel(self,text="Current grade value: 50%")
+
+def slider_event(value):
+    value = round(value)
+    percent = "Current grade value: " + str(value) + "%"
+    number.configure(text=percent)
+            
+
+
+
+number.pack()
+slider = ctk.CTkSlider(master=self, from_=0, to=100, command=slider_event)
+slider.place(relx=0.5, rely=0.2, anchor=ctk.N)
+        
+        
