@@ -25,6 +25,7 @@ class SimulatedAssignment:
 
 @dataclass
 class Subject:
+    name: str
     weights: list[Weight]
 
     @property

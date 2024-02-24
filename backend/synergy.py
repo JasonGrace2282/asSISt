@@ -31,9 +31,13 @@ def check_account_success(
         raise RuntimeError("Oops, an error occurred with logging in") from e
 
 
-def parse_class(weight: dict, weights: list[Weight]) -> Subject | None:
+def parse_class(
+    weight: dict,
+    weights: list[Weight],
+    name: str
+) -> Subject | None:
     if weight["@Type"] == "TOTAL":
-        return Subject(weights)
+        return Subject(name, weights)
 
     points = weight["@Points"]
     total_points = weight["@PointsPossible"]
@@ -75,13 +79,13 @@ def parse_subjects(
         weights = []
         for weight in grading_scheme["AssignmentGradeCalc"]:
             # modify weights, if the total is reached return a Subject
-            tmp = parse_class(weight, weights)
+            tmp = parse_class(weight, weights, courses["@Title"])
             if isinstance(tmp, Subject):
                 return tmp
         raise RuntimeError("Invalid Output from API")
 
     # otherwise it isn't weighted
-    subject = Subject([Weight(0, 0, 1)])
+    subject = Subject(courses["@Title"], [Weight(0, 0, 1)])
     parse_unweighted(
         marks["Assignments"]["Assignment"],  # type: ignore
         subject
