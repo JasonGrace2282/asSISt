@@ -1,5 +1,4 @@
 import customtkinter as ctk
-from ui import auth
 
 
 class App(ctk.CTk):
@@ -16,32 +15,49 @@ class App(ctk.CTk):
                     ""
                 )
         ).pack(pady=20)
-        ctk.CTkLabel(
+
+        username, passwd, domain = self.auth()
+
+    def get_entry(
+        self,
+        text: str = "",
+        placeholder_text: str = "",
+        label: bool = True,
+        text_kwargs: dict = {},
+        **kwargs
+    ) -> ctk.CTkEntry:
+        kwargs = {"pady": 20} | kwargs
+        if label:
+            ctk.CTkLabel(self, text=text, **text_kwargs).pack(**kwargs)
+        entry = ctk.CTkEntry(
             self,
-            text="Instructions: Pick whether to enter your grade as number of\
-            right points or as a percentage.".replace("           ", "")
-        ).pack(pady=20)
+            placeholder_text=placeholder_text,
+            **text_kwargs
+        )
+        entry.pack(**kwargs)
+        return entry
 
-        def choiceselected():
-            print("button pressed")
+    def auth(self):
+        outputs = (
+            self.get_entry(
+                "Enter StudenVUE Information:",
+                "Username",
+                text_kwargs={"width": 300}
+            ),
+            self.get_entry(
+                placeholder_text="Password",
+                label=False,
+                text_kwargs={"width": 300}
+            ),
+            self.get_entry(
+                placeholder_text="Domain (ex: sisstudent.fcps.edu/SVUE)",
+                label=False,
+                text_kwargs={"width": 300}
+            )
+        )
+        ctk.CTkButton(self, text="Authenticate").pack(pady=20)
 
-        button = ctk.CTkButton(master=self, text="", command=choiceselected)
-        button.pack(padx=20, pady=10)
-
-        number = ctk.CTkLabel(self, text="Current grade value: 50%")
-
-        def slider_event(value):
-            percent = f"Current grade value: {value:.0f}%"
-            number.configure(text=percent)
-
-        number.pack()
-        # slider = ctk.CTkSlider(
-        #     self,
-        #     from_=0,
-        #     to=100,
-        #     command=slider_event
-        # )
-        # slider.place(relx=0.5, rely=0.2, anchor=ctk.N)
+        return outputs
 
 
 def main():
