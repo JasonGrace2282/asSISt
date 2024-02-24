@@ -18,7 +18,9 @@ class Weight:
 
 @dataclass
 class SimulatedAssignment:
-    assignment_weight: Weight
+    points: float
+    points_possible: float
+    name: str
 
 
 @dataclass

@@ -39,9 +39,9 @@ def parse_class(weight: dict, weights: list[Weight]) -> Subject | None:
     total_points = weight["@PointsPossible"]
     weights.append(
         Weight(
-            int(weight["@Weight"][:-1])/100,  # PERCENT weightage
-            points,
-            total_points,
+            percent=int(weight["@Weight"][:-1])/100,  # PERCENT weightage
+            points=points,
+            points_possible=total_points,
             name=weight["@Type"]
         )
     )
