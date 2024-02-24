@@ -18,6 +18,9 @@ class App(ctk.CTk):
         authenticate_button = ctk.CTkButton(self, text="Authenticate")
         authenticate_button.pack()
 
+        
+        self.destroy()
+
 
 def main():
     ctk.set_appearance_mode("dark")
