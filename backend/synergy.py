@@ -13,7 +13,11 @@ def login(username: str, password: str, domain: str) -> None:
     )
 
 
-def check_account_success(username: str, password: str, domain: str) -> StudentVue:
+def check_account_success(
+        username: str,
+        password: str,
+        domain: str
+        ) -> StudentVue:
     # TODO: Add error checking
     return StudentVue(username, password, domain)
 
@@ -35,12 +39,15 @@ def parse_class(weight, weights: Weighting) -> Subject | None:
 def parse_subjects(subjects: dict[str, list[dict]]) -> Subject:
     marks = subjects["Marks"]
     grading_scheme = marks["Mark"]["GradeCalculationSummary"]
+    # if it's weighted
     if grading_scheme:
         weights = Weighting(is_weighted=True)
         for weight in grading_scheme["AssignmentGradeCalc"]:
-            tmp = parse_class(weight)
-            if tmp is not None:
+            # modify weights, if the total is reached return a Subject
+            tmp = parse_class(weight, weights)
+            if isinstance(tmp, Subject):
                 return tmp
-        else:
-        pass # TODO
+    else:
+        # not weighted, todo
+        pass
     raise ValueError("Something went wrong?")
