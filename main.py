@@ -25,8 +25,6 @@ class App(ctk.CTk):
             number.configure(text=percent)
             
 
-
-
         number.pack()
         slider = ctk.CTkSlider(master=self, from_=0, to=100, command=slider_event)
         slider.place(relx=0.5, rely=0.2, anchor=ctk.N)
