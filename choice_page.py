@@ -24,7 +24,7 @@ class App(ctk.CTk):
 
         def percent_selected():
             percent_chosen = True
-        percentbutton = ctk.CTkButton(master=self, text="Click Here to Enter as Percent!", command=percent_selected)
+        percentbutton = ctk.CTkButton(master=self, text="Click Here to Enter as Percent!", command=percent_selected,bd=3)
         percentbutton.place(x=375,y=130)
 
 
