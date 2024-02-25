@@ -52,6 +52,8 @@ def parse_class(
 
 
 def parse_unweighted(assignments: list[dict], subject: Subject) -> None:
+    if not isinstance(assignments, list):
+        assignments = [assignments]
     for assign in assignments:
         if "Points Possible" in assign["@Points"]:
             continue
@@ -86,6 +88,7 @@ def parse_subjects(
 
     # otherwise it isn't weighted
     subject = Subject(courses["@Title"], [Weight(0, 0, 1)])
+    # exit(1)
     parse_unweighted(
         marks["Assignments"]["Assignment"],  # type: ignore
         subject
