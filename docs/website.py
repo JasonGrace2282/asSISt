@@ -1,7 +1,7 @@
 import streamlit as st
 
 def main():
-    st.title("About Project")
+    st.title("ASSIST")
 
     # About Section
     st.markdown("""
