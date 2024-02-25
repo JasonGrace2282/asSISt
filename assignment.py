@@ -43,6 +43,8 @@ class Assignment(ctk.CTkScrollableFrame):
             root.clear_screen()  # type: ignore
             root.choose_classes()  # type: ignore
             root.mainloop()
+            root.clear_screen()
+            root.assignment_gui()
 
         ctk.CTkButton(
             self,

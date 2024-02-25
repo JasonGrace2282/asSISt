@@ -3,14 +3,14 @@ from tkinter import Widget
 from backend import login
 from assignment import Assignment
 from constants import DEFAULT_FONT
-import subprocess, os
+import subprocess
+import os
 
 
 class App(ctk.CTk):
     def __init__(self) -> None:
         super().__init__()
         self.title("asSISt")
-        self.wm_attributes('-fullscreen', 'true')
         self.geometry(f"{self.winfo_screenwidth()}x{self.winfo_screenheight()}+0+0")
 
         self.window_title = ctk.CTkLabel(
@@ -23,17 +23,6 @@ class App(ctk.CTk):
             font=DEFAULT_FONT
         )
         self.window_title.pack(pady=20)
-
-        # bigheader = ctk.CTkLabel(
-        #     self,
-        #     text="Let's calculate your",
-        #     font=("Oswald", 20),
-        # )
-        # bigheader.pack(
-        #     side="left",  # packing
-        #     anchor="nw",
-        #     padx=30
-        # )
 
         username, passwd, domain = self.auth()
         self.mainloop()
