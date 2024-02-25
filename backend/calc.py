@@ -16,5 +16,5 @@ def simulate_assignments(
 
 def calc_final_grade(sub: Subject, *sims: SimulatedAssignment) -> float:
     subject_copy = deepcopy(sub)
-    simulate_assignments(subject_copy, *sims)
+    simulate_assignments(subject_copy, *(x for x in sims if x))
     return subject_copy.final_grade
