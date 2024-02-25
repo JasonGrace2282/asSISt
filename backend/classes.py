@@ -1,11 +1,20 @@
 from dataclasses import dataclass
+from customtkinter import CTkEntry
 
 
 __all__ = [
     "Subject",
     "Account",
-    "SimulatedAssignment"
+    "SimulatedAssignment",
+    "Weight"
 ]
+
+
+def pcall(f, *args, **kwargs):
+    try:
+        return f(*args, **kwargs)
+    except Exception:
+        pass
 
 
 @dataclass
@@ -18,9 +27,16 @@ class Weight:
 
 @dataclass
 class SimulatedAssignment:
-    points: float
-    points_possible: float
+    expr: CTkEntry
     name: str
+
+    @property
+    def points(self):
+        return pcall(float, self.expr.get().split("/")[0])
+
+    @property
+    def points_possible(self):
+        return pcall(float, self.expr.get().split("/")[1])
 
 
 @dataclass
