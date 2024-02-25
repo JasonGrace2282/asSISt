@@ -1,13 +1,13 @@
 import streamlit as st
 
 def main():
-    st.title("ASSIST")
+    st.title("asSISt")
 
     # About Section
     st.markdown("""
         **<font color=purple>About</font>**
 
-        *<font color=purple>PROJECT NAME</font>* is an open source software designed for students attending school districts that use **StudentVUE by Synergy**. 
+        *<font color=purple>asSISt</font>* is an open source software designed for students attending school districts that use **StudentVUE by Synergy**. 
         This project, built for *<font color=purple>HackTJ</font>*, aims to simplify students' lives by providing a system to calculate grades on the go. 
         Our mission is to empower students to allocate their time efficiently to classes that need it most, avoiding wasted effort.
     """, unsafe_allow_html=True)
@@ -24,7 +24,7 @@ def main():
 
         Once the program is running, enter your **Username**, **Password**, and the domain of your studentvue website (e.g., "sisstudent.fcps.edu/SVUE").
 
-        Next, choose a subject to simulate grades for. You can view your grades normally or add custom assignments to simulate your grades. 
+        Next, choose a subject to simulate grades for. You can view your grades normally and add custom assignments to simulate your grades. 
         To add custom assignments, click the plus sign and fill out the simulated grade's name, points possible, points earned, and weight category. 
         This will create a new simulated grade that factors into your class grade average.
 
