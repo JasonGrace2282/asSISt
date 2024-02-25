@@ -8,7 +8,11 @@ def simulate_assignments(
 ) -> None:
     for sim in simulations:
         for idx, weight in enumerate(sub.weights):
-            if weight.name == sim.name:
+            if (
+                weight.name == sim.name
+                and sim.points is not None
+                and sim.points_possible is not None
+            ):
                 weights = sub.weights[idx]
                 weights.points += sim.points
                 weights.points_possible += sim.points_possible

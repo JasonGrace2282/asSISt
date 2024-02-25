@@ -1,5 +1,5 @@
 import customtkinter as ctk
-from backend.classes import Subject
+from backend.classes import Subject, SimulatedAssignment
 from backend.calc import calc_final_grade
 
 
@@ -11,19 +11,37 @@ class Assignment(ctk.CTkScrollableFrame):
             height=root.winfo_height()
         )
 
-        self.rows = []
-        self.pluses = []
-        self.simulations = []
+        self.sims = []
 
         self.subject = subject
         self.pack(pady=20)
         self._get_base_stats()
 
-        for i in range(len(subject.weights)):
-            self.rows.append(2)
-            self.pluses.append(None)
-            self.simulations.append([])
-            self.add_button(i)
+        for col, sub in enumerate(self.subject.weights, start=1):
+            for row in range(3, 6):
+                self.sims.append(SimulatedAssignment(
+                    ctk.CTkEntry(
+                        self,
+                        placeholder_text="grade / total"
+                    ),
+                    name=sub.name
+                ))
+                self.sims[-1].expr.grid(row=row, column=col, **self.kwargs)
+        ctk.CTkButton(
+            self,
+            text="Recalculate",
+            command=self.update_grade
+        ).grid(
+            row=2,
+            column=len(self.subject.weights)+1,
+            **self.kwargs
+        )
+
+    def update_grade(self) -> None:
+        self.final_grade.configure(
+            text=f"{calc_final_grade(self.subject, *self.sims)*100:.1f}%",
+            require_redraw=True
+        )
 
     def _get_base_stats(self) -> None:
         def get_val(n: float) -> float | int:
@@ -50,7 +68,7 @@ class Assignment(ctk.CTkScrollableFrame):
         )
         self.final_grade = ctk.CTkLabel(
             self,
-            text=f"{calc_final_grade(self.subject, *self.simulations)*100:.1f}%"
+            text=f"{calc_final_grade(self.subject, *self.sims)*100:.1f}%"
         )
         self.final_grade.grid(
             row=2,
@@ -58,23 +76,4 @@ class Assignment(ctk.CTkScrollableFrame):
             **self.kwargs
         )
 
-    def add_button(self, col: int) -> None:
-        self.pluses[col] = ctk.CTkButton(
-            self,
-            text="+",
-            command=lambda c=col: self.expand(c)
-        )
-        self.rows[col] += 1
-        print(self.rows[col])
-        self.pluses[col].grid(row=self.rows[col], column=col+1, **self.kwargs)
 
-    def expand(self, col: int) -> None:
-        self.pluses[col].destroy()
-        print(self.rows)
-        self.simulations[col].append(ctk.CTkEntry(self, placeholder_text="points / total"))
-        self.simulations[col][-1].grid(
-            column=col+1,
-            rows=self.rows[col]-2,
-            **self.kwargs
-        )
-        self.add_button(col)
