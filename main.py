@@ -83,12 +83,16 @@ class App(ctk.CTk):
             text="Authenticate",
             command=self.quit
         ).pack(pady=20)
-        
         return outputs
 
     def choose_classes(self) -> None:
+        self.subject = ""
         for subject in self.account.subjects:
-            ctk.CTkButton(self, text=subject.name, command=self.quit).pack(pady=20)
+            def quit(sub=subject):
+                self.subject = sub
+                self.quit()
+
+            ctk.CTkButton(self, text=subject.name, command=quit).pack(pady=20)
 
 
 def main():
