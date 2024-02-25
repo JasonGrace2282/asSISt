@@ -22,3 +22,17 @@ def calc_final_grade(sub: Subject, *sims: SimulatedAssignment) -> float:
     subject_copy = deepcopy(sub)
     simulate_assignments(subject_copy, *(x for x in sims if x))
     return subject_copy.final_grade
+
+
+def finals_grade_recalc(
+    final_grade: float,
+    finals_points: float,
+    weighting: tuple[float, float]
+) -> float:
+    """Final grade comes form `calc_final_grade`. `finals_points` is the percent they got on their midterm/final. Weighting is the ratio of the rating of the final grade to the weighting of the final exam"""  # type: ignore
+    # assert sum(weighting) == 1
+    # weighting is the ratio of final grade to final exam grade
+    if finals_points == "":
+        return final_grade
+    return final_grade*weighting[0]+finals_points*weighting[1]
+
