@@ -14,7 +14,7 @@ def main():
 
     # How to Use Section
     st.markdown("""
-        **<font color=blue>How to Use</font>**
+        **<font color=green>How to Use</font>**
 
         To use our program, follow these steps:
 
@@ -36,6 +36,17 @@ def main():
     st.markdown("""
         **<font color=black>More info about [HackTJ](https://hacktj.org)</font>**
     """, unsafe_allow_html=True)
+
+    st.markdown("""
+
+
+
+
+
+""")
+
+
+
 
 if __name__ == "__main__":
     main()
