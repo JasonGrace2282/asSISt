@@ -118,7 +118,7 @@ class App(ctk.CTk):
     def assignment_gui(self) -> None:
         self.clear_screen()
         Assignment(self, self.subject)
-        self.mainloop()
+        self.mainloop() 
 
 
 def main():
