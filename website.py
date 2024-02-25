@@ -1,35 +1,64 @@
 import streamlit as st
 
 def main():
+    progress_bar = st.progress(0)
+    status_text = st.empty()
+    chart = st.line_chart(np.random.randn(10, 2))
+
+    for i in range(100):
+        # Update progress bar.
+        progress_bar.progress(i + 1)
+
+        new_rows = np.random.randn(10, 2)
+
+        # Update status text.
+        status_text.text(
+        'The latest random number is: %s' % new_rows[-1, 1])
+
+    # Append data to the chart.
+    chart.add_rows(new_rows)
+
+    # Pretend we're doing some computation that takes time.
+    time.sleep(0.1)
+
+status_text.text('Done!')
+st.balloons()
+    
     st.title("About Project")
 
+    # About Section
     st.markdown("""
-        ### About
-        PROJECT NAME is an open source software to be used by students who attend school districts that use StudentVUE by Synergy. 
-        This project is built for HackTJ to make the lives of students easier. Our mission is to make a system that enables students to 
-        calculate their grades anywhere on the go. With our technology, students can allocate their time to classes that need it most 
-        and avoid wasting valuable effort.
+        **<font color=blue>About</font>**
 
-        ### How to Use
-        To use our program, start by clicking [on this link](https://github.com/JasonGrace2282/hacktj24). Scroll down and follow the 
-        installation instructions below and run "main.py".
+        *<font color=purple>PROJECT NAME</font>* is an open source software designed for students attending school districts that use **StudentVUE by Synergy**. 
+        This project, built for *<font color=blue>HackTJ</font>*, aims to simplify students' lives by providing a system to calculate grades on the go. 
+        Our mission is to empower students to allocate their time efficiently to classes that need it most, avoiding wasted effort.
+    """, unsafe_allow_html=True)
 
-        To use our program, start by clicking on the link above. Follow the installation instructions below and run "main.py". Next, enter 
-        in your Username and Password. Then enter in the domain of your studentvue website. For example, if you attend Fairfax County 
-        Schools, you would enter the domain "sisstudent.fcps.edu/SVUE".
+    # How to Use Section
+    st.markdown("""
+        **<font color=green>How to Use</font>**
 
-        Then, you choose a subject to simulate grades for. Once you've done that, you can view your grades normally, or you can add custom 
-        assignments to simulate your grades. To do this, click the plus sign and then fill out the simulated grade's name, points possible, 
-        points earned, and weight category. This will give you a new simulated grade that will factor into your class grade average.
+        To use our program, follow these steps:
 
-        This feature helps our users to figure out their grades before their teachers put them into the gradebook, or work out scenarios and 
-        strategize where to allocate your time when you study to make sure you can spread out your attention to where it's important.
-    
-        ### 
-        ### 
-        More info about [HackTJ](https://hacktj.org)
+        1. Click [<font color=green>this link</font>](https://github.com/JasonGrace2282/hacktj24) to access the project on GitHub.
+        2. Scroll down and follow the installation instructions below.
+        3. Run "main.py".
 
-    """)
+        Once the program is running, enter your **Username**, **Password**, and the domain of your studentvue website (e.g., "sisstudent.fcps.edu/SVUE").
+
+        Next, choose a subject to simulate grades for. You can view your grades normally or add custom assignments to simulate your grades. 
+        To add custom assignments, click the plus sign and fill out the simulated grade's name, points possible, points earned, and weight category. 
+        This will create a new simulated grade that factors into your class grade average.
+
+        This feature helps users to anticipate their grades before teachers input them into the gradebook. It also allows for scenario planning and 
+        strategizing study time allocation based on grade priorities.
+    """, unsafe_allow_html=True)
+
+    # HackTJ Section
+    st.markdown("""
+        **<font color=red>More info about [HackTJ](https://hacktj.org)</font>**
+    """, unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
