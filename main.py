@@ -83,7 +83,7 @@ class App(ctk.CTk):
     def auth(self):
         outputs = (
             self.get_entry(
-                "Enter StudenVUE Information:",
+                "Enter StudentVUE Information:",
                 "Username",
                 text_kwargs={"width": 300}
             ),
