@@ -1,27 +1,32 @@
 import customtkinter as ctk
+from tkinter import Widget
 from backend import login
 
 
 class App(ctk.CTk):
     def __init__(self) -> None:
         super().__init__()
-        self.title("Hello World")
+        self.title("StudentVUE Grade Helpers")
         self.geometry("500x500")
 
-        ctk.CTkLabel(
+        label = ctk.CTkLabel(
             self,
             text="Calculate the impact of an new individual assginment on your\
                 grade based on its weight and score".replace(
                     "               ",
                     ""
                 )
-        ).pack(pady=20)
+        )
+        label.pack(pady=20)
 
         username, passwd, domain = self.auth()
         self.mainloop()
-        while not (username.get() and passwd.get() and domain.get()):
+        # clean screen
+        self.clear_screen([label])
+        while not (username.get() and passwd.get()):
             username, passwd, domain = self.auth()
             self.mainloop()
+            self.clear_screen([label])
 
         self.account = login(
             username.get(),
@@ -29,6 +34,12 @@ class App(ctk.CTk):
             domain.get() if domain.get() else "sisstudent.fcps.edu/SVUE"
         )
         self.choose_classes()
+        self.mainloop()
+
+    def clear_screen(self, whitelist: list[Widget]):
+        for widget in self.winfo_children():
+            if widget not in whitelist:
+                widget.destroy()
 
 
     def get_entry(
@@ -76,9 +87,10 @@ class App(ctk.CTk):
 
         return outputs
 
-
     def choose_classes(self) -> None:
-        ctk.CTkLabel(self, text="hi").pack()
+        for subject in self.account.subjects:
+            ctk.CTkButton(self, text=subject.name, command=self.quit).pack(pady=20)
+
 
 def main():
     ctk.set_appearance_mode("dark")
