@@ -56,7 +56,7 @@ def parse_unweighted(assignments: list[dict], subject: Subject) -> None:
         if "Points Possible" in assign["@Points"]:
             continue
         points, possible_points = map(
-            int,
+            float,
             # parse stuff of form "3 / 4"
             assign["@Points"].replace(" ", "").split("/")
         )
