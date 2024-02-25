@@ -1,6 +1,7 @@
 # asSISt
 An app designed to help calculate grades from StudentVUE by Synergy.
-![Screenshot of Application UI](https://github.com/JasonGrace2282/hacktj24/assets/110117391/223ad1ff-b547-41b5-90a2-70d2c30071a5)
+![Screenshot of Application UI](https://github.com/JasonGrace2282/hacktj24/assets/110117391/b245847e-a2d9-4924-a892-d26c84063c45)
+
 
 - Native support for weighted gradebooks 💪
 - Blazing fast grade recalculation ⏲️
