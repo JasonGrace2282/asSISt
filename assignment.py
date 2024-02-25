@@ -22,7 +22,7 @@ class Assignment(ctk.CTkScrollableFrame):
         for i in range(len(subject.weights)):
             self.rows.append(2)
             self.pluses.append(None)
-            self.simulations.append(None)
+            self.simulations.append([])
             self.add_button(i)
 
     def _get_base_stats(self) -> None:
@@ -62,18 +62,19 @@ class Assignment(ctk.CTkScrollableFrame):
         self.pluses[col] = ctk.CTkButton(
             self,
             text="+",
-            font=(None, 30),
             command=lambda c=col: self.expand(c)
         )
         self.rows[col] += 1
-        self.pluses[col].grid(row=self.rows[col], column=col+1)
+        print(self.rows[col])
+        self.pluses[col].grid(row=self.rows[col], column=col+1, **self.kwargs)
 
     def expand(self, col: int) -> None:
         self.pluses[col].destroy()
-        self.simulations[col] = ctk.CTkEntry(self, placeholder_text="points / total")
-        self.simulations[col].grid(
+        print(self.rows)
+        self.simulations[col].append(ctk.CTkEntry(self, placeholder_text="points / total"))
+        self.simulations[col][-1].grid(
             column=col+1,
-            rows=self.rows[col],
+            rows=self.rows[col]-2,
             **self.kwargs
         )
         self.add_button(col)
