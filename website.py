@@ -35,7 +35,7 @@ def main():
                 color: #E91E63; /* Pink color for ordered lists */
             }
             footer {
-                color: #000; /* Black color for footer text */
+                color: #910A67; /* Light Purple color for footer text */
             }
         </style>
         <div style="padding: 20px;">
