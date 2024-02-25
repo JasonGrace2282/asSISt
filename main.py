@@ -74,6 +74,9 @@ class App(ctk.CTk):
         return entry
 
     def auth(self):
+        def quit(*_):
+            self.quit()
+            self.bind("<Return>", lambda _: None)
         outputs = (
             self.get_entry(
                 "Enter StudentVUE Information:",
@@ -94,8 +97,12 @@ class App(ctk.CTk):
         ctk.CTkButton(
             self,
             text="Authenticate",
-            command=self.quit
+            command=quit
         ).pack(pady=20)
+
+        outputs[0].focus()
+        self.bind("<Return>", quit)
+
         return outputs
 
     def choose_classes(self) -> None:
