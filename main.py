@@ -19,29 +19,35 @@ class App(ctk.CTk):
                 )
         )
         self.window_title.pack(pady=20)
-        
-        bigheader = ctk.CTkLabel(self,
-                                 text="Let's calculate your ",
-                                 font=("Oswald",20),
-                                 )
-        bigheader2 = ctk.CTkLabel(self,
-                                 text="future.",
-                                 font=("Arial",30),
-                                 text_color="blue"
-                                 )
-        bigheader.pack(side="left", #packing 
-                       anchor = "n",
-                       padx=30)
-        bigheader2.pack(side="left", #packing 
-                        anchor = "n" ,
 
-                        padx=20)
-
-
+        bigheader = ctk.CTkLabel(
+            self,
+            text="Let's calculate your ",
+            font=("Oswald", 20),
+        )
+        bigheader2 = ctk.CTkLabel(
+            self,
+            text="future.",
+            font=("Arial", 30),
+            text_color="blue"
+        )
+        bigheader.pack(
+            side="left",  # packing
+            anchor="n",
+            padx=30
+        )
+        bigheader2.pack(
+            side="left",  # packing
+            anchor="n",
+            padx=20
+        )
 
         username, passwd, domain = self.auth()
         self.mainloop()
-        username, passwd, domain = (x.get() for x in (username, passwd, domain))
+        username, passwd, domain = (
+            x.get()
+            for x in (username, passwd, domain)
+        )
         # clean screen
         self.clear_screen([self.window_title])
 
@@ -106,14 +112,18 @@ class App(ctk.CTk):
         return outputs
 
     def choose_classes(self) -> None:
-        self.subject = ""
+        self.subject = self.account.subjects[0]
         for subject in self.account.subjects:
             def quit(sub=subject):
                 self.subject = sub
                 self.quit()
 
             name = subject.name
-            ctk.CTkButton(self, text=name[:name.index("(")], command=quit).pack(pady=20)
+            ctk.CTkButton(
+                self,
+                text=name[:name.index("(")],
+                command=quit
+            ).pack(pady=20)
 
     def assignment_gui(self) -> None:
         self.clear_screen()
