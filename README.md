@@ -8,6 +8,7 @@ An app designed to help calculate grades from StudentVUE by Synergy.
 - Faster loading speed then native SIS 🏃
 - Lightweight and minimalistic UI 🪶
 - Cross-county compatibility 🤝🏻
+- Robust Framework for more extensibility 🤖
 
 ## Installation Instructions
 
