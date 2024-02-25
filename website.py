@@ -48,7 +48,7 @@ def main():
                 <div class="w3-container w3-padding-32" id="about">
                     <h1>About</h1>
                     <p>
-                        <font color="purple">asSISt</font> is an open source software designed for students attending school districts that use
+                        <font color="#030637">asSISt</font> is an open source software designed for students attending school districts that use
                         <strong>StudentVUE by Synergy</strong>. This project, built for <font color="purple">HackTJ</font>, aims to simplify students' lives by
                         providing a system to calculate grades on the go. Our mission is to empower students to allocate their time efficiently to
                         classes that need it most, avoiding wasted effort.
