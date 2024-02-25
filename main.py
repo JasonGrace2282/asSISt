@@ -7,8 +7,8 @@ from assignment import Assignment
 class App(ctk.CTk):
     def __init__(self) -> None:
         super().__init__()
-        self.title("StudentVUE Grade Helpers")
-        self.geometry("500x500")
+        self.title("asSISt")
+        self.geometry("630x500")
 
         self.window_title = ctk.CTkLabel(
             self,
@@ -19,6 +19,25 @@ class App(ctk.CTk):
                 )
         )
         self.window_title.pack(pady=20)
+        
+        bigheader = ctk.CTkLabel(self,
+                                 text="Let's calculate your ",
+                                 font=("Oswald",20),
+                                 )
+        bigheader2 = ctk.CTkLabel(self,
+                                 text="future.",
+                                 font=("Arial",30),
+                                 text_color="blue"
+                                 )
+        bigheader.pack(side="left", #packing 
+                       anchor = "n",
+                       padx=30)
+        bigheader2.pack(side="left", #packing 
+                        anchor = "n" ,
+
+                        padx=20)
+
+
 
         username, passwd, domain = self.auth()
         self.mainloop()
