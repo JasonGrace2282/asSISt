@@ -1,6 +1,7 @@
 import customtkinter as ctk
 from tkinter import Widget
 from backend import login
+from assignment import Assignment
 
 
 class App(ctk.CTk):
@@ -9,7 +10,7 @@ class App(ctk.CTk):
         self.title("StudentVUE Grade Helpers")
         self.geometry("500x500")
 
-        label = ctk.CTkLabel(
+        self.window_title = ctk.CTkLabel(
             self,
             text="Calculate the impact of an new individual assginment on your\
                 grade based on its weight and score".replace(
@@ -17,14 +18,13 @@ class App(ctk.CTk):
                     ""
                 )
         )
-        label.pack(pady=20)
+        self.window_title.pack(pady=20)
 
         username, passwd, domain = self.auth()
         self.mainloop()
         username, passwd, domain = (x.get() for x in (username, passwd, domain))
         # clean screen
-        self.clear_screen([label])
-
+        self.clear_screen([self.window_title])
 
         self.account = login(
             username,
@@ -33,12 +33,13 @@ class App(ctk.CTk):
         )
         self.choose_classes()
         self.mainloop()
+        self.assignment_gui()
+        self.mainloop()
 
-    def clear_screen(self, whitelist: list[Widget]):
+    def clear_screen(self, whitelist: list[Widget] = []):
         for widget in self.winfo_children():
             if widget not in whitelist:
                 widget.destroy()
-
 
     def get_entry(
         self,
@@ -94,6 +95,11 @@ class App(ctk.CTk):
 
             name = subject.name
             ctk.CTkButton(self, text=name[:name.index("(")], command=self.quit).pack(pady=20)
+
+    def assignment_gui(self) -> None:
+        self.clear_screen()
+        Assignment(self, self.subject)
+        self.mainloop()
 
 
 def main():
