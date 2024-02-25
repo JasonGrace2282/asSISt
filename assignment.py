@@ -1,6 +1,7 @@
 import customtkinter as ctk
 from backend.classes import Subject, SimulatedAssignment
 from backend.calc import calc_final_grade
+from constants import DEFAULT_FONT
 
 
 class Assignment(ctk.CTkScrollableFrame):
@@ -74,7 +75,8 @@ class Assignment(ctk.CTkScrollableFrame):
             ).grid(row=1, **kwargs)
             ctk.CTkLabel(
                 self,
-                text=f"{get_val(weight.points)} / {get_val(weight.points_possible)}"
+                text=f"{get_val(weight.points)} / {get_val(weight.points_possible)}",
+                font=DEFAULT_FONT
             ).grid(row=2, **kwargs)
 
         ctk.CTkLabel(self, text="Final Grade", font=title_font).grid(
@@ -84,7 +86,8 @@ class Assignment(ctk.CTkScrollableFrame):
         )
         self.final_grade = ctk.CTkLabel(
             self,
-            text=f"{calc_final_grade(self.subject, *self.sims)*100:.1f}%"
+            text=f"{calc_final_grade(self.subject, *self.sims)*100:.1f}%",
+            font=DEFAULT_FONT
         )
         self.final_grade.grid(
             row=2,
