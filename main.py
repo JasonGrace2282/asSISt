@@ -1,6 +1,5 @@
 import customtkinter as ctk
 from tkinter import Widget
-from tkinter import StringVar
 from backend import login
 
 
@@ -51,13 +50,12 @@ class App(ctk.CTk):
         kwargs = {"pady": 20} | kwargs
         if label:
             ctk.CTkLabel(self, text=text, **text_kwargs).pack(**kwargs)
-        entry = StringVar(text=placeholder_text)
-        ctk.CTkEntry(
+        entry = ctk.CTkEntry(
             self,
             placeholder_text=placeholder_text,
-            textvariable=entry,
             **text_kwargs
-        ).pack(**kwargs)
+        )
+        entry.pack(**kwargs)
         return entry
 
     def auth(self):
