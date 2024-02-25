@@ -94,7 +94,7 @@ class App(ctk.CTk):
                 self.quit()
 
             name = subject.name
-            ctk.CTkButton(self, text=name[:name.index("(")], command=self.quit).pack(pady=20)
+            ctk.CTkButton(self, text=name[:name.index("(")], command=quit).pack(pady=20)
 
     def assignment_gui(self) -> None:
         self.clear_screen()
