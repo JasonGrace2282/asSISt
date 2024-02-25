@@ -1,5 +1,6 @@
 import customtkinter as ctk
 from tkinter import Widget
+from tkinter import StringVar
 from backend import login
 
 
@@ -23,10 +24,7 @@ class App(ctk.CTk):
         self.mainloop()
         # clean screen
         self.clear_screen([label])
-        while not (username.get() and passwd.get()):
-            username, passwd, domain = self.auth()
-            self.mainloop()
-            self.clear_screen([label])
+        
 
         self.account = login(
             username.get(),
@@ -53,12 +51,13 @@ class App(ctk.CTk):
         kwargs = {"pady": 20} | kwargs
         if label:
             ctk.CTkLabel(self, text=text, **text_kwargs).pack(**kwargs)
-        entry = ctk.CTkEntry(
+        entry = StringVar(text=placeholder_text)
+        ctk.CTkEntry(
             self,
             placeholder_text=placeholder_text,
+            textvariable=entry,
             **text_kwargs
-        )
-        entry.pack(**kwargs)
+        ).pack(**kwargs)
         return entry
 
     def auth(self):
