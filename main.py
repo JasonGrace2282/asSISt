@@ -92,7 +92,8 @@ class App(ctk.CTk):
                 self.subject = sub
                 self.quit()
 
-            ctk.CTkButton(self, text=subject.name, command=quit).pack(pady=20)
+            name = subject.name
+            ctk.CTkButton(self, text=name[:name.index("(")], command=self.quit).pack(pady=20)
 
 
 def main():
