@@ -12,6 +12,14 @@ class Assignment(ctk.CTkScrollableFrame):
             height=root.winfo_height()
         )
 
+        def resize(event, root=root):
+            self.configure(
+                width=root.winfo_width(),
+                height=root.winfo_height()
+            )
+
+        root.bind("<Configure>", resize)
+
         self.sims = []
 
         self.subject = subject
@@ -34,7 +42,7 @@ class Assignment(ctk.CTkScrollableFrame):
             command=self.update_grade
         ).grid(
             row=3,
-            column=len(self.subject.weights)+1,
+            column=len(self.subject.weights)+3,
             **self.kwargs
         )
 
@@ -43,8 +51,8 @@ class Assignment(ctk.CTkScrollableFrame):
             root.clear_screen()  # type: ignore
             root.choose_classes()  # type: ignore
             root.mainloop()
-            root.clear_screen()
-            root.assignment_gui()
+            root.clear_screen()  # type: ignore
+            root.assignment_gui()  # type: ignore
 
         ctk.CTkButton(
             self,
@@ -52,7 +60,7 @@ class Assignment(ctk.CTkScrollableFrame):
             command=back
         ).grid(
             row=4,
-            column=len(self.subject.weights)+1,
+            column=len(self.subject.weights)+3,
             **self.kwargs
         )
 
@@ -81,11 +89,44 @@ class Assignment(ctk.CTkScrollableFrame):
                 font=DEFAULT_FONT
             ).grid(row=2, **kwargs)
 
-        ctk.CTkLabel(self, text="Final Grade", font=title_font).grid(
+
+        # final stuff
+        ctk.CTkLabel(
+            self,
+            text="Final Exam",
+            font=title_font
+        ).grid(
             row=1,
             column=len(self.subject.weights)+2,
             **self.kwargs
         )
+
+        self.weighting = ctk.CTkEntry(
+            self,
+            placeholder_text="Percent of your grade (e.g. 20%)",
+        )
+        self.weighting.grid(
+            row=2,
+            column=len(self.subject.weights)+2,
+            **self.kwargs
+        )
+
+        self.final_exam_points = ctk.CTkEntry(
+            self,
+            placeholder_text="Estimated percent score"
+        )
+        self.final_exam_points.grid(
+            row=3,
+            column=len(self.subject.weights)+2,
+            **self.kwargs
+        )
+
+        ctk.CTkLabel(self, text="Final Grade", font=title_font).grid(
+            row=1,
+            column=len(self.subject.weights)+3,
+            **self.kwargs
+        )
+
         self.final_grade = ctk.CTkLabel(
             self,
             text=f"{calc_final_grade(self.subject, *self.sims)*100:.1f}%",
@@ -93,6 +134,6 @@ class Assignment(ctk.CTkScrollableFrame):
         )
         self.final_grade.grid(
             row=2,
-            column=len(self.subject.weights)+2,
+            column=len(self.subject.weights)+3,
             **self.kwargs
         )
