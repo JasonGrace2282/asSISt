@@ -46,7 +46,7 @@ def main():
 
     # HackTJ Section
     st.markdown("""
-        **<font color=black>More info about [HackTJ](https://hacktj.org)</font>**
+        **<font color=purple>More info about [HackTJ](https://hacktj.org)</font>**
     """, unsafe_allow_html=True)
 
 if __name__ == "__main__":
