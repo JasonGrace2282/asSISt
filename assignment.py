@@ -1,6 +1,6 @@
 import customtkinter as ctk
 from backend.classes import Subject, SimulatedAssignment
-from backend.calc import calc_final_grade
+from backend.calc import calc_final_grade, finals_grade_recalc
 from constants import DEFAULT_FONT
 
 
@@ -65,8 +65,20 @@ class Assignment(ctk.CTkScrollableFrame):
         )
 
     def update_grade(self) -> None:
+        fg = calc_final_grade(self.subject, *self.sims)
+        if (
+            self.weighting.get().isnumeric()
+            and self.final_exam_points.get().isnumeric()
+        ):
+            w = int(self.weighting.get())/100
+            print(w, self.final_exam_points.get())
+            fg = finals_grade_recalc(
+                fg,
+                int(self.final_exam_points.get())/100,
+                (1-w, w)
+            )
         self.final_grade.configure(
-            text=f"{calc_final_grade(self.subject, *self.sims)*100:.1f}%",
+            text=f"{fg*100:.1f}%",
             require_redraw=True
         )
 
@@ -89,7 +101,6 @@ class Assignment(ctk.CTkScrollableFrame):
                 font=DEFAULT_FONT
             ).grid(row=2, **kwargs)
 
-
         # final stuff
         ctk.CTkLabel(
             self,
@@ -103,7 +114,7 @@ class Assignment(ctk.CTkScrollableFrame):
 
         self.weighting = ctk.CTkEntry(
             self,
-            placeholder_text="Percent of your grade (e.g. 20%)",
+            placeholder_text="Weightage of your grade (e.g. 20)",
         )
         self.weighting.grid(
             row=2,
@@ -113,7 +124,7 @@ class Assignment(ctk.CTkScrollableFrame):
 
         self.final_exam_points = ctk.CTkEntry(
             self,
-            placeholder_text="Estimated percent score"
+            placeholder_text="Estimated percent score (ex: 67)"
         )
         self.final_exam_points.grid(
             row=3,
