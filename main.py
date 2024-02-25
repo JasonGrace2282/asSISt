@@ -2,45 +2,36 @@ import customtkinter as ctk
 from tkinter import Widget
 from backend import login
 from assignment import Assignment
+from constants import DEFAULT_FONT
 
 
 class App(ctk.CTk):
     def __init__(self) -> None:
         super().__init__()
         self.title("asSISt")
-        self.geometry("630x500")
+        self.geometry(f"{self.winfo_screenwidth()}x{self.winfo_screenheight()}")
 
         self.window_title = ctk.CTkLabel(
             self,
-            text="Calculate the impact of an new individual assginment on your\
+            text="Calculate the impact of an new individual assginment on your\n\
                 grade based on its weight and score".replace(
                     "               ",
                     ""
-                )
+                ),
+            font=DEFAULT_FONT
         )
         self.window_title.pack(pady=20)
 
-        bigheader = ctk.CTkLabel(
-            self,
-            text="Let's calculate your ",
-            font=("Oswald", 20),
-        )
-        bigheader2 = ctk.CTkLabel(
-            self,
-            text="future.",
-            font=("Arial", 30),
-            text_color="blue"
-        )
-        bigheader.pack(
-            side="left",  # packing
-            anchor="n",
-            padx=30
-        )
-        bigheader2.pack(
-            side="left",  # packing
-            anchor="n",
-            padx=20
-        )
+        # bigheader = ctk.CTkLabel(
+        #     self,
+        #     text="Let's calculate your",
+        #     font=("Oswald", 20),
+        # )
+        # bigheader.pack(
+        #     side="left",  # packing
+        #     anchor="nw",
+        #     padx=30
+        # )
 
         username, passwd, domain = self.auth()
         self.mainloop()
@@ -74,7 +65,10 @@ class App(ctk.CTk):
         text_kwargs: dict = {},
         **kwargs
     ) -> ctk.CTkEntry:
+
         kwargs = {"pady": 20} | kwargs
+        text_kwargs = {"font": DEFAULT_FONT} | text_kwargs
+
         if label:
             ctk.CTkLabel(self, text=text, **text_kwargs).pack(**kwargs)
         entry = ctk.CTkEntry(
@@ -91,17 +85,17 @@ class App(ctk.CTk):
             self.get_entry(
                 "Enter StudentVUE Information:",
                 "Username",
-                text_kwargs={"width": 300}
+                text_kwargs={"width": 500}
             ),
             self.get_entry(
                 placeholder_text="Password",
                 label=False,
-                text_kwargs={"width": 300, "show": "*"}
+                text_kwargs={"width": 500, "show": "*"}
             ),
             self.get_entry(
                 placeholder_text="Domain (ex: sisstudent.fcps.edu/SVUE)",
                 label=False,
-                text_kwargs={"width": 300}
+                text_kwargs={"width": 500}
             )
         )
         ctk.CTkButton(
@@ -122,7 +116,8 @@ class App(ctk.CTk):
             ctk.CTkButton(
                 self,
                 text=name[:name.index("(")],
-                command=quit
+                command=quit,
+                font=DEFAULT_FONT
             ).pack(pady=20)
 
     def assignment_gui(self) -> None:

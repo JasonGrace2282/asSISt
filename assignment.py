@@ -32,7 +32,23 @@ class Assignment(ctk.CTkScrollableFrame):
             text="Recalculate",
             command=self.update_grade
         ).grid(
-            row=2,
+            row=3,
+            column=len(self.subject.weights)+1,
+            **self.kwargs
+        )
+
+        def back():
+            root.quit()
+            root.clear_screen()  # type: ignore
+            root.choose_classes()  # type: ignore
+            root.mainloop()
+
+        ctk.CTkButton(
+            self,
+            text="Back",
+            command=back
+        ).grid(
+            row=4,
             column=len(self.subject.weights)+1,
             **self.kwargs
         )
@@ -75,5 +91,3 @@ class Assignment(ctk.CTkScrollableFrame):
             column=len(self.subject.weights)+2,
             **self.kwargs
         )
-
-
