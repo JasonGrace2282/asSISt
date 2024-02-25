@@ -4,6 +4,8 @@ An app designed to help calculate grades from StudentVUE by Synergy.
 - Blazing fast grade recalculation ⏲️
 - See the effect of multiple sets of assignments on your grade 🏆
 - Faster loading speed 🏃
+- Lightweight 🪶
+- Cross-county compatibility 🤝🏻
 
 ## Installation Instructions
 
