@@ -12,6 +12,18 @@ def main():
         Our mission is to empower students to allocate their time efficiently to classes that need it most, avoiding wasted effort.
     """, unsafe_allow_html=True)
 
+    # Design goals
+    st.markdown("""
+        **<font color=purple>Design Principles</font>**
+
+        *<font color=purple>asSISt</font>* was designed to be as flexible and minimalistic as possible. Its main logic deals with
+        converting between the XML data provided by the Synergy API to true python objects. This simple design choice allows
+        any user to easily extend the program by utilizing the login function in the backend.
+
+        The choice to have a minimalistic UI (with a few exceptions) stems from the fact that the app is not meant to be engaging:
+        rather it tries to encourage one to try out stuff as needed and encourages students to focus their time and energy elsewhere.
+    """, unsafe_allow_html=True)
+
     # How to Use Section
     st.markdown("""
         **<font color=blue>How to Use</font>**
