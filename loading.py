@@ -2,11 +2,13 @@ import tkinter as tk
 from PIL import Image, ImageTk
 from itertools import count, cycle
 
+
 class ImageLabel(tk.Label):
     """
     A Label that displays images, and plays them if they are gifs
     :im: A PIL Image instance or a string filename
     """
+
     def load(self, im):
         if isinstance(im, str):
             im = Image.open(im)
@@ -22,7 +24,7 @@ class ImageLabel(tk.Label):
 
         try:
             self.delay = im.info['duration']
-        except:
+        except Exception:
             self.delay = 100
 
         if len(frames) == 1:
@@ -39,8 +41,9 @@ class ImageLabel(tk.Label):
             self.config(image=next(self.frames))
             self.after(self.delay, self.next_frame)
 
-#demo :
+
 root = tk.Tk()
+root.wm_attributes('-type', 'floating')
 lbl = ImageLabel(root)
 lbl.pack()
 lbl.load('loading.gif')
