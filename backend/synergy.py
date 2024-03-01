@@ -55,7 +55,10 @@ def parse_unweighted(assignments: list[dict], subject: Subject) -> None:
     if not isinstance(assignments, list):
         assignments = [assignments]
     for assign in assignments:
-        if "Points Possible" in assign["@Points"]:
+        if (
+            "Points Possible" in assign["@Points"]
+            or "Not For Grading" in assign["@NOTES"]
+        ):
             continue
         points, possible_points = map(
             float,

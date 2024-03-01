@@ -3,15 +3,17 @@ from tkinter import Widget
 from backend import login
 from assignment import Assignment
 from constants import DEFAULT_FONT
+from pathlib import Path
 import subprocess
-import os
 
 
 class App(ctk.CTk):
     def __init__(self) -> None:
         super().__init__()
         self.title("asSISt")
-        self.geometry(f"{self.winfo_screenwidth()}x{self.winfo_screenheight()}+0+0")
+        self.geometry(
+            f"{self.winfo_screenwidth()}x{self.winfo_screenheight()}+0+0"
+        )
 
         self.window_title = ctk.CTkLabel(
             self,
@@ -32,7 +34,9 @@ class App(ctk.CTk):
         )
         # clean screen
         self.clear_screen([self.window_title])
-        loading = subprocess.Popen(["python3", f"{os.getcwd()}/loading.py"])
+        loading = subprocess.Popen(
+            ["python3", f"{Path(__file__).parent / 'loading.py'}"]
+        )
 
         self.account = login(
             username,
