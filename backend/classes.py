@@ -49,6 +49,9 @@ class Subject:
         return sum(
             (weight.points / weight.points_possible) * weight.percent
             for weight in self.weights
+        ) / sum(
+            weight.percent
+            for weight in self.weights
         )
 
 
