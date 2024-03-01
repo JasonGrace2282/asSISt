@@ -57,7 +57,7 @@ def parse_unweighted(assignments: list[dict], subject: Subject) -> None:
     for assign in assignments:
         if (
             "Points Possible" in assign["@Points"]
-            or "Not For Grading" in assign["@NOTES"]
+            or "Not For Grading" in assign["@Notes"]
         ):
             continue
         points, possible_points = map(
