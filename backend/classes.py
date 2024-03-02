@@ -22,7 +22,7 @@ class Weight:
     points: float
     points_possible: float
     percent: float
-    name: str = "Unweighted"
+    name: str = "Cumulative"
 
 
 @dataclass(slots=True)
