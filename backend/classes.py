@@ -17,7 +17,7 @@ def pcall(f, *args, **kwargs):
         pass
 
 
-@dataclass
+@dataclass(slots=True)
 class Weight:
     points: float
     points_possible: float
@@ -25,7 +25,7 @@ class Weight:
     name: str = "Unweighted"
 
 
-@dataclass
+@dataclass(slots=True)
 class SimulatedAssignment:
     expr: CTkEntry
     name: str
@@ -39,7 +39,7 @@ class SimulatedAssignment:
         return pcall(float, self.expr.get().split("/")[1])
 
 
-@dataclass
+@dataclass(slots=True)
 class Subject:
     name: str
     weights: list[Weight]
@@ -55,7 +55,7 @@ class Subject:
         )
 
 
-@dataclass
+@dataclass(slots=True)
 class Account:
     name: str
     subjects: list[Subject]
