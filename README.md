@@ -24,3 +24,5 @@ python3 -u main.py # to run the app
 cd docs && python3 -m streamlit run website.py # to host site locally
 ```
 
+## Known Bugs
+- The program crashes with an `IndexError` if the gradebook doesn't have any assignments
