@@ -3,12 +3,20 @@ from backend.classes import Account, Subject, Weight
 from collections import OrderedDict
 
 
+class LoginError(Exception):
+    pass
+
+
+class ApiError(Exception):
+    pass
+
+
 def login(username: str, password: str, domain: str) -> Account:
     account = check_account_success(username, password, domain)
     # convert courses to list of Subjects
     courses = account["Courses"]["Course"]
-    for idx, _ in enumerate(courses):
-        courses[idx] = parse_subjects(account, idx)
+    for idx, course in enumerate(courses):
+        courses[idx] = parse_subjects(course)
     account = Account(
         username,
         courses
@@ -28,7 +36,7 @@ def check_account_success(
             domain
         ).get_gradebook()["Gradebook"]
     except Exception as e:
-        raise RuntimeError("Oops, an error occurred with logging in") from e
+        raise LoginError("Oops, an error occurred with logging in") from e
 
 
 def parse_class(
@@ -73,24 +81,22 @@ def parse_unweighted(assignments: list[dict], subject: Subject) -> None:
 
 
 def parse_subjects(
-    subjects: dict[str, dict[str, dict]],
-    course_idx: int
+    courses  # trying to typehint this is hell
 ) -> Subject:
-    courses = subjects["Courses"]["Course"][course_idx]
     marks = courses["Marks"]["Mark"]
     grading_scheme = marks["GradeCalculationSummary"]
 
     if grading_scheme:
         weights = []
         for weight in grading_scheme["AssignmentGradeCalc"]:
-            # modify weights, if the total is reached return a Subject
+            # modify weights, if the total is reached it returns a Subject
             tmp = parse_class(weight, weights, courses["@Title"])
             if isinstance(tmp, Subject):
                 return tmp
-        raise RuntimeError("Invalid Output from API")
+        raise ApiError("Invalid Output from API")
 
     # otherwise it isn't weighted
-    subject = Subject(courses["@Title"], [Weight(0, 0, 1)])
+    subject = Subject(courses["@Title"], [Weight(0, 0, percent=1)])
     # exit(1)
     parse_unweighted(
         marks["Assignments"]["Assignment"],  # type: ignore
