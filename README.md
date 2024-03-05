@@ -17,8 +17,8 @@ An app designed to help calculate grades from StudentVUE by Synergy.
 
 Run the following commands:
 ```bash
-git clone https://github.com/JasonGrace2282/hacktj24.git
-cd hacktj24
+git clone https://github.com/JasonGrace2282/asSISt.git
+cd asSISt
 python3 -m pip install -r requirements.txt
 python3 -u main.py # to run the app
 cd docs && python3 -m streamlit run website.py # to host site locally
