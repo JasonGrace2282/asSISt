@@ -1,3 +1,6 @@
+## WARNING:
+This branch will become unmaintained following the merge of PR [#2](https://github.com/JasonGrace2282/asSISt/pull/2). It exists only as a relic.
+
 # asSISt
 ![Logo](assist_logo.png)
 
