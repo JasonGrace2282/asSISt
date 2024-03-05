@@ -1,0 +1,13 @@
+table {
+  border: 2px solid red;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  padding: 20px;
+}
+
+.classname {
+  font-size: 24;
+}

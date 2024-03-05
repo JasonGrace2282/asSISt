@@ -1,0 +1,34 @@
+{% load static %}
+
+<head>
+  <link rel="stylesheet" href={% static 'grades.css' %}/>
+</head>
+<body>
+  <span class='classname'>{{ classname|default:"" }}</span>
+  <table>
+    <tr>
+      {% for name in weights %}
+        <td>{{ name }}</td>
+      {% endfor %}
+    </tr>
+    <tr>
+      {% for status in statuses %}
+        <td>{{ status }}</td>
+      {% endfor %}
+    </tr>
+    <form method="post">
+      {% csrf_token %}
+      <div class='simulation'>
+        {% for row in rows %}
+          <tr>
+          {% for name in weights %}
+            <td><input type='text' name="{{ name }}_{{ row }}" placeholder="points / total"></td>
+          {% endfor %}
+          </tr>
+        {% endfor %}
+      </div>
+      <input type="submit" value="Recalculate">
+    </form>
+  </table>
+  <div class='grade'>Final Grade:<br>{{ fg }}</div>
+</body>

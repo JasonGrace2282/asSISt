@@ -1,0 +1,17 @@
+{% load static %}
+
+<head>
+  <link rel="stylesheet" href={% static "buttons.css" %} />
+</head>
+<body>
+  Welcome {{ username|default:"" }}!<br>
+  Choose a class to see your grades
+  <form method="post">
+  {% csrf_token %}
+  {% for class in classes %}
+    <input type="radio" class="course" name="course" value="{{ class.title }}">
+    <label for={{ class.title }}>{{ class.title }}</label><br>
+  {% endfor %}
+  <input type="submit" value="See Class">
+  </form>
+</body>

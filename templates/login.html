@@ -1,0 +1,17 @@
+<!-- vim:ft=htmldjango -->
+
+{% load static %}
+
+<head>
+  <link rel="stylesheet" href={% static 'login.css' %} >
+</head>
+<body>
+  <em>Login with your studentVUE login</em><br>
+  If you are not a FCPS student, please enter your StudentVUE domain<br>
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Log in">
+  </form>
+</body>
