@@ -11,6 +11,21 @@ class CalcGrades(FormView):
     fg = None
     '''Final Grade override'''
 
+    @property
+    def form_class(self):
+        """The form_class created."""
+        account = Account.objects.get(  # type: ignore
+            id=self.request.session.get("SIS_AUTH_USER_INFO")
+        )
+        subject_name = self.request.session.get('SUBJECT')
+
+        weights = []
+        for subject in account.subjects.all():
+            if str(subject.name).upper() == subject_name.upper():
+                weights += [x.name for x in subject.weights.all()]
+
+        return get_grades_form(weights)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         account = Account.objects.get(  # type: ignore
@@ -63,22 +78,7 @@ class CalcGrades(FormView):
                 )
                 if tmp is None or len(tmp) != 2:
                     continue
-                sims[weight.name].append([*tmp,])
+                sims[weight.name].append(tmp)
 
         self.fg = subject.get_final_grade(category_sims=sims)
         return self.render_to_response(self.get_context_data())
-
-    @property
-    def form_class(self):
-        """The form_class created."""
-        account = Account.objects.get(  # type: ignore
-            id=self.request.session.get("SIS_AUTH_USER_INFO")
-        )
-        subject_name = self.request.session.get('SUBJECT')
-
-        weights = []
-        for subject in account.subjects.all():
-            if str(subject.name).upper() == subject_name.upper():
-                weights += [x.name for x in subject.weights.all()]
-
-        return get_grades_form(weights)
