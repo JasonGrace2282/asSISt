@@ -2,7 +2,6 @@ from django.shortcuts import HttpResponseRedirect
 from django.views.generic import ListView, TemplateView
 from django.views import View
 from django.urls import reverse
-from django.contrib import messages
 from sisview.models import Account
 from .models import ClassButton
 
