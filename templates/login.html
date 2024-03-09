@@ -3,15 +3,22 @@
 {% load static %}
 
 <head>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href={% static 'login.css' %} >
 </head>
 <body>
+  <div class="background">
+    <div class="shape"></div>
+    <div class="shape"></div>
+  </div>
   <em>Login with your studentVUE login</em><br>
   If you are not a FCPS student, please enter your StudentVUE domain<br>
 
   <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <input type="submit" value="Log in">
+    <button type="submit">Log In</button>
   </form>
 </body>
