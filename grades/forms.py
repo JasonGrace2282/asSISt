@@ -13,7 +13,7 @@ def _as_table(self: forms.Form) -> str:
         str: _description_
     """
     table: str = super(type(self), self).as_table()
-    table = table.split("\n")[1:] # remove first <tr>
+    table = table.split("\n")
     final = ""
     tr_count = 0
     for chunk in table:
