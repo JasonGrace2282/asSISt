@@ -19,6 +19,7 @@ Run the following commands:
 git clone https://github.com/JasonGrace2282/asSISt.git
 cd asSISt
 python3 -m pip install -r requirements.txt
+python3 manage.py migrate # create database stuff
 python3 manage.py runserver # to host website locally
 ```
 Then open [http://localhost:8000](http://localhost:8000) (or [http://127.0.0.1:8000/](http://127.0.0.1:8000/)) in your preferred web browser.
