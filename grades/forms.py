@@ -4,14 +4,6 @@ from django.utils.safestring import SafeString
 
     
 def _as_table(self: forms.Form) -> str:
-    """_summary_
-
-    Args:
-        self (forms.Form): _description_
-
-    Returns:
-        str: _description_
-    """
     table: str = super(type(self), self).as_table()
     table = table.split("\n")
     final = ""
