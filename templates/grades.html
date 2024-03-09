@@ -19,13 +19,7 @@
     <form method="post">
       {% csrf_token %}
       <div class='simulation'>
-        {% for row in rows %}
-          <tr>
-          {% for name in weights %}
-            <td><input type='text' name="{{ name }}_{{ row }}" placeholder="points / total"></td>
-          {% endfor %}
-          </tr>
-        {% endfor %}
+        {{ form.as_table }}
       </div>
       <input type="submit" value="Recalculate">
     </form>

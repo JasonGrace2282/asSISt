@@ -1,5 +1,5 @@
 from django.views.generic import FormView
-from django.urls import reverse_lazy, reverse
+from django.urls import reverse_lazy
 from sisview.models import Account
 from .forms import get_grades_form
 
@@ -24,7 +24,7 @@ class CalcGrades(FormView):
             if str(subject.name).upper() == subject_name.upper():
                 weights += [x.name for x in subject.weights.all()]
 
-        return get_grades_form(weights)
+        return get_grades_form(weights, len(weights))
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -41,7 +41,7 @@ class CalcGrades(FormView):
                     for x in weights
                 ]
                 context['classname'] = subject_name
-                context['rows'] = range(1, 4)
+                context['rows'] = range(3)
                 context['fg'] = (
                     self.fg
                     if self.fg is not None
@@ -49,7 +49,7 @@ class CalcGrades(FormView):
                 )
         return context
 
-    def post(self, request, *args, **kwargs):
+    def form_valid(self, form):
         def pcall(f, *args, **kwargs):
             try:
                 return f(*args, **kwargs)
@@ -69,10 +69,10 @@ class CalcGrades(FormView):
 
         for weight in subject.weights.all():
             sims[weight.name] = []
-            for row in range(1, 4):
+            for row in range(3):
                 tmp = pcall(
                     lambda x: [float(i) for i in x],
-                    request.POST[f'{weight.name}_{row}'].replace(
+                    form.cleaned_data[f'{weight.name}_{row}'].replace(
                         " ", ""
                     ).split("/")
                 )
