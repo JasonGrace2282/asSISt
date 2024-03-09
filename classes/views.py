@@ -2,6 +2,7 @@ from django.shortcuts import HttpResponseRedirect
 from django.views.generic import ListView, TemplateView
 from django.views import View
 from django.urls import reverse
+from django.contrib import messages
 from sisview.models import Account
 from .models import ClassButton
 
@@ -23,6 +24,8 @@ class ChooseClasses(ListView):
         return context
 
     def post(self, request, *args, **kwargs):
+        if request.POST.get("course") is None:
+            return self.get(request, *args, **kwargs)
         self.request.session['SUBJECT'] = request.POST.get('course')
         return HttpResponseRedirect('grades')
 
