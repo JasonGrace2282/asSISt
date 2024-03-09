@@ -1,0 +1,34 @@
+{% load static %}
+
+<head>
+  <link rel="stylesheet" href={% static 'grades.css' %}/>
+</head>
+<body>
+  <span class='classname'>{{ classname|default:"" }}</span>
+  <br>
+  <div class='grade'>Final Grade: {{ fg }}</div>
+  <table class="container">
+    <thead>
+      <tr>
+        {% for name in weights %}
+          <th><h1>{{ name }}</h1></th>
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        {% for status in statuses %}
+          <td>{{ status }}</td>
+        {% endfor %}
+      </tr>
+      <form method="post">
+        {% csrf_token %}
+        <div class='simulation'>
+          {{ form.as_table }}
+        </div>
+        <input type="submit" value="Recalculate" class="recalculate">
+      </form>
+    </tbody>
+  </table>
+  <a href="../"><button class="back">Back</button></a>
+</body>

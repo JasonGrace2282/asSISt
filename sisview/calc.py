@@ -1,4 +1,4 @@
-from backend.classes import SimulatedAssignment, Subject
+from .classes import SimulatedAssignment, Subject
 from copy import deepcopy
 
 
