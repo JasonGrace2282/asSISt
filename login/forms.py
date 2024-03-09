@@ -7,4 +7,8 @@ class LoginForm(forms.Form):
         widget=forms.PasswordInput,
         max_length=100
     )
-    domain = forms.CharField(max_length=200, required=False)
+    domain = forms.CharField(
+        max_length=200,
+        required=False,
+        widget=forms.TextInput(attrs={"placeholder": "sisstudent.fcps.edu/SVUE"})
+    )

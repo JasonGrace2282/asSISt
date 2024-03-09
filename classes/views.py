@@ -1,5 +1,6 @@
 from django.shortcuts import HttpResponseRedirect
 from django.views.generic import ListView, TemplateView
+from django.views import View
 from django.urls import reverse
 from sisview.models import Account
 from .models import ClassButton
@@ -26,9 +27,7 @@ class ChooseClasses(ListView):
         return HttpResponseRedirect('grades')
 
 
-class LoadingScreen(TemplateView):
-    template_name = "loading.html"
-
+class LoadingScreen(View):
     def get(self, request, *args, **kwargs):
         info = request.session.get("SIS_AUTH_USER_INFO")
         account = self.protected_login(**info)
