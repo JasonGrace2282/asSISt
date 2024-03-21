@@ -38,12 +38,14 @@ class App(ctk.CTk):
             ["python3", f"{Path(__file__).parent / 'loading.py'}"]
         )
 
-        self.account = login(
-            username,
-            passwd,
-            domain if domain else "sisstudent.fcps.edu/SVUE"
-        )
-        loading.terminate()
+        try:
+            self.account = login(
+                username,
+                passwd,
+                domain if domain else "sisstudent.fcps.edu/SVUE"
+            )
+        finally:
+            loading.terminate()
         self.choose_classes()
         self.mainloop()
         self.assignment_gui()
