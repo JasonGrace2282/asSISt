@@ -13,6 +13,8 @@ class ApiError(Exception):
 
 def login(username: str, password: str, domain: str) -> Account:
     gradebook = check_account_success(username, password, domain)
+    if isinstance(gradebook, str):
+        raise LoginError(gradebook)
 
     # if login was successfull create account
     account = Account(name=username)
@@ -29,11 +31,14 @@ def check_account_success(
     domain: str
 ) -> OrderedDict:
     try:
-        return StudentVue(
+        gradebook = StudentVue(
             username,
             password,
             domain
-        ).get_gradebook()["Gradebook"]
+        ).get_gradebook()
+        if gradebook.get("RT_ERROR"):
+            return gradebook["RT_ERROR"]["@ERROR_MESSAGE"]
+        return gradebook["Gradebook"]
     except KeyError as e:
         raise LoginError(
             "Oops, an error occurred with logging in. Incorrect Credentials?"
