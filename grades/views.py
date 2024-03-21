@@ -1,6 +1,6 @@
 from django.views.generic import FormView
 from django.urls import reverse_lazy
-from sisview.models import Account
+from sisview.models import Subject
 from .forms import get_grades_form
 
 
@@ -11,42 +11,33 @@ class CalcGrades(FormView):
     fg = None
     '''Final Grade override'''
 
-    @property
-    def form_class(self):
+    def get_form_class(self):
         """The form_class created."""
-        account = Account.objects.get(  # type: ignore
-            id=self.request.session.get("SIS_AUTH_USER_INFO")
-        )
-        subject_name = self.request.session.get('SUBJECT')
+        subject_id = self.request.session.get('SUBJECT')
 
         weights = []
-        for subject in account.subjects.all():
-            if str(subject.name).upper() == subject_name.upper():
-                weights += [x.name for x in subject.weights.all()]
+        subject = Subject.objects.get(pk=subject_id)
+        weights += [x.name for x in subject.weights.all()]
 
         return get_grades_form(weights, len(weights))
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        account = Account.objects.get(  # type: ignore
-            id=self.request.session.get("SIS_AUTH_USER_INFO")
+        subject_id = self.request.session.get('SUBJECT')
+        subject = Subject.objects.get(pk=subject_id)
+        weights = subject.weights.all()
+        context['weights'] = [x.name for x in weights]
+        context['statuses'] = [
+            x.get_status()
+            for x in weights
+        ]
+        context['classname'] = subject.name
+        context['rows'] = range(3)
+        context['fg'] = (
+            self.fg
+            if self.fg is not None
+            else subject.get_final_grade({})
         )
-        subject_name = self.request.session.get('SUBJECT')
-        for subject in account.subjects.all():
-            if str(subject.name).upper() == subject_name.upper():
-                weights = subject.weights.all()
-                context['weights'] = [x.name for x in weights]
-                context['statuses'] = [
-                    x.get_status()
-                    for x in weights
-                ]
-                context['classname'] = subject_name
-                context['rows'] = range(3)
-                context['fg'] = (
-                    self.fg
-                    if self.fg is not None
-                    else subject.get_final_grade({})
-                )
         return context
 
     def form_valid(self, form):
@@ -57,15 +48,8 @@ class CalcGrades(FormView):
                 return None
 
         sims = {}
-        account = Account.objects.get(  # type: ignore
-            id=self.request.session.get("SIS_AUTH_USER_INFO")
-        )
-        subject_name = self.request.session.get('SUBJECT')
-        for subject in account.subjects.all():
-            if str(subject.name).upper() == subject_name.upper():
-                break
-        else:
-            return  # uh oh no matches?
+        subject_id = self.request.session.get('SUBJECT')
+        subject = Subject.objects.get(pk=subject_id)
 
         for weight in subject.weights.all():
             sims[weight.name] = []

@@ -1,41 +1,45 @@
 from django.shortcuts import HttpResponseRedirect
-from django.views.generic import ListView, TemplateView
+from django.views.generic import FormView
 from django.views import View
 from django.urls import reverse
 from sisview.models import Account
-from .models import ClassButton
+from .forms import ChooseClass
 
 
-class ChooseClasses(ListView):
-    model = ClassButton
+class ChooseClasses(FormView):
     template_name = "choose-classes.html"
+    success_url = "grades"
+
+    def get_form_class(self):
+        form_class = ChooseClass
+        form_class.account = Account.objects.get(
+            pk=self.request.session["account_id"]
+        )
+        return form_class
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        account = Account.objects.get(  # type: ignore
-            pk=self.request.session.get("SIS_AUTH_USER_INFO")
-        )
+
+        account_id = self.request.session["account_id"]
+        account = Account.objects.get(pk=account_id)
         context['username'] = str(account.name)
-        context['classes'] = [
-            subject.name
-            for subject in account.subjects.all()
-        ]
         return context
 
-    def post(self, request, *args, **kwargs):
-        if request.POST.get("course") is None:
-            return self.get(request, *args, **kwargs)
-        self.request.session['SUBJECT'] = request.POST.get('course')
-        return HttpResponseRedirect('grades')
+    def form_valid(self, form):
+        self.request.session['SUBJECT'] = form.cleaned_data['class']
+        return super().form_valid(form)
 
 
 class LoadingScreen(View):
     def get(self, request, *args, **kwargs):
-        info = request.session.get("SIS_AUTH_USER_INFO")
-        account = self.protected_login(**info)
+        account = self.protected_login(*[
+            request.session[x]
+            for x in ["username", "password", "domain"]
+        ])
         if isinstance(account, str):
+            print(account)
             return HttpResponseRedirect(reverse('login-page'))
-        request.session["SIS_AUTH_USER_INFO"] = account.id
+        request.session["account_id"] = account.pk
         return HttpResponseRedirect(reverse('choose-classes'))
 
     @staticmethod
