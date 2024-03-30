@@ -17,7 +17,7 @@ class LoginView(FormView):
                 if (domain := form.cleaned_data["domain"])
                 else "sisstudent.fcps.edu/SVUE"  # adding https:// breaks it
                 # for LCPS it is
-                'https://sis.lcps.org/PXP2_Login_Student.aspx'
+                # 'https://sis.lcps.org/PXP2_Login_Student.aspx'
             )
         }
         return super().form_valid(form)
