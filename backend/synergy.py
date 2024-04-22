@@ -77,7 +77,7 @@ def parse_subjects(
     course_idx: int
 ) -> Subject:
     courses = subjects["Courses"]["Course"][course_idx]
-    marks = courses["Marks"]["Mark"]
+    marks = courses["Marks"]["Mark"][0]
     grading_scheme = marks["GradeCalculationSummary"]
 
     if grading_scheme:
