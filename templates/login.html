@@ -21,9 +21,10 @@
         {{ form.password }}
         <h4 class="text-light">Domain:</h4>
         {{ form.domain }}
-        <div class="row justify-content-center">
-          <div class="col-auto">
+        <div class="row">
+          <div class="d-flex flex-column justify-content-center">
             <button type="submit" class="btn btn-outline-light btn-lg btn-block">Log In</button>
+            <img src="{% static 'assist_logo.png' %}" alt="Assist Logo" width="730" style="margin-top: 10px;" class="img-fluid mx-auto d-block">
           </div>
         </div>
       </form>
