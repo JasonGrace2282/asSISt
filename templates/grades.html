@@ -1,11 +1,10 @@
 {% load static %}
 
 <head>
-  <!-- <link rel="stylesheet" href={% static 'grades.css' %}/> -->
-  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href={% static 'grades.css' %}/>
 </head>
-<body class="bg-dark">
-  <span class='display-4 text-center text-light'>{{ classname|default:"" }}</span>
+<body>
+  <span class='classname'>{{ classname|default:"" }}</span>
   <br>
   <div class='grade'>Final Grade: {{ fg }}</div>
   <table class="container">
