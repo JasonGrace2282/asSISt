@@ -2,9 +2,9 @@ from django import forms
 
 
 class LoginForm(forms.Form):
-    username = forms.CharField(max_length=20, widget=forms.TextInput(attrs={'class': "form-control"}))
+    username = forms.CharField(max_length=20, widget=forms.TextInput(attrs={"placeholder": 'Username', 'class': "form-control"}))
     password = forms.CharField(
-        widget=forms.PasswordInput(attrs={'class': "form-control"}),
+        widget=forms.PasswordInput(attrs={"placeholder": 'Password', 'class': "form-control"}),
         max_length=100
     )
     domain = forms.CharField(

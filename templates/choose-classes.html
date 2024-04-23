@@ -1,23 +1,27 @@
 {% load static %}
 
 <head>
-  <link rel="stylesheet" href={% static "classes.css" %} />
-  <!-- <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}"> -->
+  <!-- <link rel="stylesheet" href={% static "classes.css" %} /> -->
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
 </head>
-<body>
-  <h1>Welcome {{ username|default:"" }}!</h1>
-  <h3>Choose a class to see your grades</h3>
-  <div class="background">
-    <div class="shape"></div>
-    <div class="shape"></div>
-  </div>
-  <div class="classes">
-    <table>
-      <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="See Class">
-      </form>
-    </table>
+<body class="bg-dark">
+  <div class="container">
+    <h1 class="display-3 text-center text-light">Welcome {{ username|default:"" }}!</h1>
+    <h3 class="text-center text-secondary">Choose a class to see your grades</h3>
+    <div class="background">
+      <div class="shape"></div>
+      <div class="shape"></div>
+    </div>
+    <div class="classes">
+      <table>
+        <form method="post">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <div class="d-flex justify-content-center">
+            <input type="submit" value="See Class" class="btn btn-outline-light btn-lg">
+          </div>
+        </form>
+      </table>
+    </div>
   </div>
 </body>
