@@ -9,24 +9,24 @@
   <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
   <link rel="icon" type="image/x-icon" href="../static/synergy_icon.ico">
   <title>Assist Login</title>
-  <!-- <link rel="stylesheet" href={% static 'login.css' %} > -->
+  <link rel="stylesheet" href={% static 'login.css' %} >
 </head>
 <body class="bg-dark">
   <div class="container">
+    <img src="{% static 'assist_logo_light.png' %}" alt="Assist Logo" width="650" style="margin-top: 20px;" class="img-fluid mx-auto d-block">
     <h3 class="display-2 text-center text-light" >Login to StudentVUE</h3>
       <form method="post">
         <h4 class="text-center text-secondary">If you are not a FCPS student, please enter your StudentVUE domain</h4>
         {% csrf_token %}
-        <h4 class="text-light">Username:</h4>
+        <h4 class="text-light input_title">Username:</h4>
         {{ form.username }}
-        <h4 class="text-light">Password:</h4>
+        <h4 class="text-light input_title">Password:</h4>
         {{ form.password }}
-        <h4 class="text-light">Domain:</h4>
+        <h4 class="text-light input_title">Domain:</h4>
         {{ form.domain }}
         <div class="row">
-          <div class="d-flex flex-column justify-content-center">
-            <button type="submit" class="btn btn-outline-light btn-lg btn-block">Log In</button>
-            <img src="{% static 'assist_logo_light.png' %}" alt="Assist Logo" width="650" style="margin-top: 20px;" class="img-fluid mx-auto d-block">
+          <div class="d-flex flex-column">
+            <button type="submit" class="btn btn-outline-light btn-lg btn-block element">Log In</button>
           </div>
         </div>
       </form>
