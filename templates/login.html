@@ -13,16 +13,16 @@
 </head>
 <body class="bg-dark">
   <div class="container">
-    <img src="{% static 'assist_logo_light.png' %}" alt="Assist Logo" width="650" style="margin-top: 20px;" class="img-fluid mx-auto d-block">
-    <h3 class="display-2 text-center text-light" style="font-family: Varela Round, sans-serif;">Login to StudentVUE</h3>
+    <img src="{% static 'assist_logo_light.png' %}" alt="Assist Logo" width="640" style="margin-top: 20px;" class="img-fluid mx-auto d-block">
+    <h3 class="display-2 text-center text-light varela_font">Login to StudentVUE</h3>
       <form method="post">
-        <h4 class="text-center text-secondary" style="font-family: Varela Round, sans-serif;">If you are not a FCPS student, please enter your StudentVUE domain</h4>
+        <h4 class="text-center text-secondary varela_font">If you are not a FCPS student, please enter your StudentVUE domain</h4>
         {% csrf_token %}
-        <h4 class="text-light input_title" style="font-family: Varela Round, sans-serif; margin-top: 3px;">Username:</h4>
+        <h4 class="text-light input_title varela_font" style="margin-top: 3px;">Username:</h4>
         {{ form.username }}
-        <h4 class="text-light input_title" style="font-family: Varela Round, sans-serif; margin-top: 3px;">Password:</h4>
+        <h4 class="text-light input_title varela_font" style="margin-top: 3px;">Password:</h4>
         {{ form.password }}
-        <h4 class="text-light input_title" style="font-family: Varela Round, sans-serif; margin-top: 3px;">Domain:</h4>
+        <h4 class="text-light input_title varela_font" style="margin-top: 3px;">Domain:</h4>
         {{ form.domain }}
         <div class="row">
           <div class="d-flex flex-column">
