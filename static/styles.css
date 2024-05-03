@@ -1,0 +1,36 @@
+.element {
+  width: 550;
+  margin: 0 auto;
+}
+
+.input_title {
+  margin-left: 350;
+}
+
+.varela_font {
+  font-family: Varela Round, sans-serif;;
+}
+
+.class-radio label {
+  display: inline-block;
+  width: 550px;
+  padding: 10px 20px;
+  margin-right: 10px;
+  margin-top: 5px;
+  background-color: #212529;
+  border: 1px solid #f8f9fa;
+  color: #f8f9fa;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  font-family: Varela Round, sans-serif;
+}
+
+.class-radio input[type="radio"]:checked + label {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.class-radio input[type="radio"] {
+  display: none;
+}
