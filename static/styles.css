@@ -26,7 +26,7 @@
   font-family: Varela Round, sans-serif;
 }
 
-.class-radio input[type="radio"]:checked + label {
+.class-radio label:hover {
   background-color: #4CAF50;
   color: white;
 }
