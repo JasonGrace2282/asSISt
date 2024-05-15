@@ -34,3 +34,20 @@
 .class-radio input[type="radio"] {
   display: none;
 }
+
+.table-dark {
+  margin: auto;
+}
+
+.center-text {
+  text-align: center;
+}
+
+.grade-element {
+  width: 400;
+  margin: 2 auto;
+}
+
+.weight-name {
+  margin-top: 30px;
+}
