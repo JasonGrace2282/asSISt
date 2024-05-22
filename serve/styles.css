@@ -27,13 +27,12 @@
 }
 
 .class-radio label:hover {
-  background-color: white;
+  background-color: green;
   color: black;
 }
 
-.class-radio label:checked {
-  background-color: white;
-  color: black;
+.class-radio input[type="radio"] {
+  display: none;
 }
 
 .table-dark {
