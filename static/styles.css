@@ -27,7 +27,7 @@
 }
 
 .class-radio label:hover {
-  background-color: white;
+  background-color: blue;
   color: black;
 }
 
@@ -40,15 +40,10 @@
   margin: auto;
 }
 
-.center-text {
-  text-align: center;
-}
-
-.grade-element {
-  width: 400;
-  margin: 2 auto;
-}
-
 .weight-name {
   margin-top: 30px;
+}
+
+.center-text {
+  text-align: center;
 }

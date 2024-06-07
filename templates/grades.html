@@ -1,46 +1,54 @@
 {% load static %}
 
 <head>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-  <link rel="icon" type="image/x-icon" href="../static/synergy_icon.ico">
-  <title>{{ classname|default:"" }}</title>
-  <link rel="stylesheet" href={% static 'styles.css' %} >
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="icon" type="image/x-icon" href="../static/synergy_icon.ico">
+    <title>{{ classname|default:"" }}</title>
+    <link rel="stylesheet" href={% static 'styles.css' %}>
 </head>
 <body class="bg-dark">
-  <div class="container d-flex justify-content-center align-items-center">
+<div class="container d-flex justify-content-center align-items-center">
     <span class='display-2 text-light varela_font'>{{ classname|default:"" }}</span>
     <br>
-  </div>
-  <div class="container d-flex justify-content-center align-items-center">
+</div>
+<div class="container d-flex justify-content-center align-items-center">
     <div class='display-6 text-center text-secondary varela_font'>Grade: {{ fg }}</div>
-  </div>
-  <table class="table-dark">
+</div>
+<table class="table-dark">
     <thead>
-      <tr>
+    <tr>
         {% for name in weights %}
-          <th><h1 class="center-text varela_font weight-name">{{ name }}</h1></th>
+            <th><h1 class="center-text varela_font weight-name">{{ name }}</h1></th>
         {% endfor %}
-      </tr>
+    </tr>
     </thead>
     <tbody>
-      <tr>
+    <tr>
         {% for status in statuses %}
-          <td class="center-text">{{ status }}</td>
+            <td class="center-text">{{ status }}</td>
         {% endfor %}
-      </tr>
-      <form method="post">
+    </tr>
+    <form method="post">
         {% csrf_token %}
         <div>
-          {{ form.as_table }}
+            {{ form.as_table }}
         </div>
-        <div>
-          <input type="submit" value="Recalculate" class="position-absolute bottom-50">
-        </div>
-      </form>
+    </form>
     </tbody>
-  </table>
-  <a href="../"><button class="back">Back</button></a>
+</table>
+<div class="container d-flex justify-content-center align-items-center">
+    <form method="post">
+        {% csrf_token %}
+        <input type="submit" value="Recalculate" class="btn btn-lg btn-outline-light"
+               style="margin-top: 10px;">
+    </form>
+</div>
+<div class="container d-flex justify-content-center align-items-center">
+    <a href="../">
+        <button class="btn btn-lg btn-outline-light">Back</button>
+    </a>
+</div>
 </body>

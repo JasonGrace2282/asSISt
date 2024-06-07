@@ -1,30 +1,34 @@
 {% load static %}
 
 <head>
-  <link rel="stylesheet" href={% static 'styles.css' %} >
-  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-  <link rel="icon" type="image/x-icon" href="../static/synergy_icon.ico">
-  <title>Classes</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href={% static 'styles.css' %}>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="icon" type="image/x-icon" href="../static/synergy_icon.ico">
+    <title>Classes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
 </head>
 <body class="bg-dark">
-  <div class="container d-flex justify-content-center align-items-center">
+<div class="container d-flex justify-content-center align-items-center">
     <div class="text-center">
-      <h1 class="display-2 text-light varela_font">Welcome {{ username|default:"" }}!</h1>
-      <h3 class="text-secondary varela_font">Choose a class to see your grades</h3>
-      <div class="background">
-        <div class="shape"></div>
-        <div class="shape"></div>
-      </div>
-      <div class="classes">
-        <form method="post" class="mx-auto">
-          {% csrf_token %}
-          {{ form.as_p }}
-          <button type="submit" class="btn btn-outline-light btn-lg mt-3"><span class="varela_font">See Class</span></button>
-        </form>
-      </div>
+        <h1 class="display-2 text-light varela_font">Welcome {{ username|default:"" }}!</h1>
+        <h3 class="text-secondary varela_font">Choose a class to see your grades</h3>
+        <div class="background">
+            <div class="shape"></div>
+            <div class="shape"></div>
+        </div>
+        <div class="classes">
+            <form method="post" class="mx-auto">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-outline-light btn-lg mt-3"><span
+                        class="varela_font">See Class</span></button>
+            </form>
+            <a href="../">
+                <button class="btn btn-lg btn-outline-light">Logout</button>
+            </a>
+        </div>
     </div>
-  </div>
+</div>
 </body>
