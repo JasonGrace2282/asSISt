@@ -5,50 +5,50 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-    <link rel="icon" type="image/x-icon" href="../static/synergy_icon.ico">
+    <link rel="icon" type="image/x-icon" href="{% static 'synergy_icon.ico' %}">
     <title>{{ classname|default:"" }}</title>
     <link rel="stylesheet" href={% static 'styles.css' %}>
 </head>
 <body class="bg-dark">
-<div class="container d-flex justify-content-center align-items-center">
-    <span class='display-2 text-light varela_font'>{{ classname|default:"" }}</span>
-    <br>
-</div>
-<div class="container d-flex justify-content-center align-items-center">
-    <div class='display-6 text-center text-secondary varela_font'>Grade: {{ fg }}</div>
-</div>
-<table class="table-dark">
-    <thead>
-    <tr>
-        {% for name in weights %}
-            <th><h1 class="center-text varela_font weight-name">{{ name }}</h1></th>
-        {% endfor %}
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        {% for status in statuses %}
-            <td class="center-text">{{ status }}</td>
-        {% endfor %}
-    </tr>
+    <div class="container d-flex justify-content-center align-items-center">
+        <span class='display-2 text-light varela_font'>{{ classname|default:"" }}</span>
+        <br>
+    </div>
+    <div class="container d-flex justify-content-center align-items-center">
+        <div class='display-6 text-center text-secondary varela_font'>Grade: {{ fg }}</div>
+    </div>
     <form method="post">
         {% csrf_token %}
-        <div>
-            {{ form.as_table }}
+        <table class="table-dark">
+            <thead>
+                <tr>
+                    {% for name in weights %}
+                        <th><h1 class="center-text varela_font weight-name">{{ name }}</h1></th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    {% for status in statuses %}
+                        <td class="center-text">{{ status }}</td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td colspan="{{ weights|length }}">
+                        <div class="form-table">
+                            {{ form.as_table }}
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="container d-flex justify-content-center align-items-center">
+            <input type="submit" value="Recalculate" class="btn btn-lg btn-outline-light" style="margin-top: 10px;">
         </div>
     </form>
-    </tbody>
-</table>
-<div class="container d-flex justify-content-center align-items-center">
-    <form method="post">
-        {% csrf_token %}
-        <input type="submit" value="Recalculate" class="btn btn-lg btn-outline-light"
-               style="margin-top: 10px;">
-    </form>
-</div>
-<div class="container d-flex justify-content-center align-items-center">
-    <a href="../">
-        <button class="btn btn-lg btn-outline-light">Back</button>
-    </a>
-</div>
+    <div class="container d-flex justify-content-center align-items-center">
+        <a href="../">
+            <button class="btn btn-lg btn-outline-light">Back</button>
+        </a>
+    </div>
 </body>
