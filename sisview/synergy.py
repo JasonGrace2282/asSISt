@@ -94,7 +94,7 @@ def parse_subject(
     courses,  # trying to typehint this is hell
     account: Account
 ) -> None:
-    marks = courses["Marks"]["Mark"]
+    marks = courses["Marks"]["Mark"][0]
     grading_scheme = marks["GradeCalculationSummary"]
 
     subject = account.subjects.create(name=courses["@Title"])

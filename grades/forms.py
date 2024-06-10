@@ -25,7 +25,7 @@ def get_grades_form(weights: list[str], columns: int):
         for i in range(3):
             attrs[f'{weight}_{i}'] = forms.CharField(
                 required=False,
-                widget=forms.TextInput(attrs={'placeholder': 'points / total'})
+                widget=forms.TextInput(attrs={'placeholder': 'points / total', 'class': 'form-control grade-element'})
             )
     
     attrs['as_table'] = _as_table

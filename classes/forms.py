@@ -9,5 +9,6 @@ class ChooseClass(forms.Form):
             choices=[
                 (subject.id, subject.name)
                 for subject in self.account.subjects.all()
-            ]
+            ],
+            widget=forms.RadioSelect(attrs={'class': 'class-radio'}),
         )
