@@ -1,0 +1,35 @@
+<!-- vim:ft=htmldjango -->
+
+{% load static %}
+
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <link rel="icon" type="image/x-icon" href="{% static 'synergy_icon.ico' %}">
+  <title>Assist Login</title>
+  <link rel="stylesheet" href={% static 'styles.css' %} >
+</head>
+<body class="bg-dark">
+  <div class="container">
+    <img src="{% static 'assist_logo_light.png' %}" alt="Assist Logo" width="640" style="margin-top: 20px;" class="img-fluid mx-auto d-block">
+    <h3 class="display-2 text-center text-light varela_font">Login to StudentVUE</h3>
+    <form method="post">
+      <h4 class="text-center text-secondary varela_font">If you are not a FCPS student, please enter your StudentVUE domain</h4>
+      {% csrf_token %}
+      <h4 class="text-light input_title varela_font" style="margin-top: 3px;">Username:</h4>
+      {{ form.username }}
+      <h4 class="text-light input_title varela_font" style="margin-top: 3px;">Password:</h4>
+      {{ form.password }}
+      <h4 class="text-light input_title varela_font" style="margin-top: 3px;">Domain:</h4>
+      {{ form.domain }}
+      <div class="row">
+        <div class="d-flex flex-column">
+          <button type="submit" class="btn btn-outline-light btn-lg btn-block element"><span class="varela_font">Log In</span></button>
+        </div>
+      </div>
+    </form>
+    {{ form.errors }}
+  </div>
+</body>

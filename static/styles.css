@@ -1,0 +1,48 @@
+.element {
+  width: 550px;
+  margin: 0 auto;
+}
+
+.input_title {
+  margin-left: 350px;
+}
+
+.varela_font {
+  font-family: Varela Round, sans-serif;;
+}
+
+.class-radio label {
+  display: inline-block;
+  width: 550px;
+  padding: 10px 20px;
+  margin-right: 10px;
+  margin-top: 5px;
+  background-color: #212529;
+  border: 1px solid #f8f9fa;
+  color: #f8f9fa;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  font-family: Varela Round, sans-serif;
+}
+
+.class-radio label:hover {
+  background-color: white;
+  color: black;
+}
+
+.table-dark {
+  margin: auto;
+}
+
+.weight-name {
+  margin-top: 30px;
+}
+
+.center-text {
+  text-align: center;
+}
+
+.grade-element {
+  width: 300px;
+}

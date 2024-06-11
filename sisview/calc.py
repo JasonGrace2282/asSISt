@@ -1,11 +1,11 @@
-from backend.classes import SimulatedAssignment, Subject
+from __future__ import annotations
+
 from copy import deepcopy
 
+from .classes import SimulatedAssignment, Subject
 
-def simulate_assignments(
-    sub: Subject,
-    *simulations: SimulatedAssignment
-) -> None:
+
+def simulate_assignments(sub: Subject, *simulations: SimulatedAssignment) -> None:
     for sim in simulations:
         for idx, weight in enumerate(sub.weights):
             if (
@@ -25,14 +25,16 @@ def calc_final_grade(sub: Subject, *sims: SimulatedAssignment) -> float:
 
 
 def finals_grade_recalc(
-    final_grade: float,
-    finals_points: float,
-    weighting: tuple[float, float]
+    final_grade: float, finals_points: float, weighting: tuple[float, float]
 ) -> float:
-    """Final grade comes form `calc_final_grade`. `finals_points` is the percent they got on their midterm/final. Weighting is the ratio of the rating of the final grade to the weighting of the final exam"""  # type: ignore
+    """Recalculates the grades from the finals
+
+    Final grade comes form `calc_final_grade`.
+    `finals_points` is the percent they got on their midterm/final.
+    Weighting is the ratio of the rating of the final grade to the weighting of the final exam
+    """
     # assert sum(weighting) == 1
     # weighting is the ratio of final grade to final exam grade
     if finals_points == "":
         return final_grade
-    return final_grade*weighting[0]+finals_points*weighting[1]
-
+    return final_grade * weighting[0] + finals_points * weighting[1]
