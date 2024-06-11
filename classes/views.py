@@ -4,8 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views import View
-from django.views.generic import FormView
+from django.views.generic import FormView, TemplateView
 
 from .forms import ChooseClass
 
@@ -32,9 +31,9 @@ class ChooseClasses(LoginRequiredMixin, FormView):
         return super().form_valid(form)
 
 
-class LoadingScreen(LoginRequiredMixin, View):
-    def get(self, *args, **kwargs):
-        return render(self.request, "loading.html")
+class LoadingScreen(LoginRequiredMixin, TemplateView):
+    template_name =  "loading.html"
+
 
     def post(self, *args, **kwargs):
         account = self.protected_login(
@@ -43,6 +42,7 @@ class LoadingScreen(LoginRequiredMixin, View):
             self.request.session["domain"],
         )
         error = account if isinstance(account, str) else ""
+        print(error)
         return JsonResponse({"error": error})
 
     def protected_login(self, username: str, password: str, domain: str):

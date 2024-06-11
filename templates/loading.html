@@ -17,6 +17,7 @@
       <div class="text-light">
         <h3>Logging you in...</h3>
         <span>This may take some time based on your internet</span>
+        <span style="font-size:13pt">If this takes more than 3 minutes, contact a developer</span>
       </div>
       <div id="hi"></div>
     </div>
@@ -29,7 +30,7 @@
       function(rawdataobj) {
         const rawdata = JSON.stringify(rawdataobj);
         const data = JSON.parse(rawdata);
-        if (data["errors"]) {
+        if (data["error"] != "") {
           window.location.replace("{% url 'login-page' %}"+"?errors="+data["errors"]);
         } else {
           window.location.replace("{% url 'choose-classes' %}");

@@ -29,7 +29,7 @@ class LoginForm(AuthenticationForm):
         if username is not None and password:
             self.user_cache = authenticate(self.request, username=username, password=password)
             if self.user_cache is None:
-                self.create_user()
+                self.user_cache = self.create_user()
             self.confirm_login_allowed(self.user_cache)
 
         return self.cleaned_data
@@ -45,4 +45,4 @@ class LoginForm(AuthenticationForm):
         )
         user.set_password(self.cleaned_data["password"])
         user.save()
-        return super().confirm_login_allowed(user)
+        return user
