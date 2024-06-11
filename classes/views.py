@@ -1,8 +1,9 @@
 from __future__ import annotations
 
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import HttpResponseRedirect
-from django.urls import reverse, reverse_lazy
+from django.http import JsonResponse
+from django.shortcuts import render
+from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import FormView
 
@@ -31,28 +32,30 @@ class ChooseClasses(LoginRequiredMixin, FormView):
         return super().form_valid(form)
 
 
-# TODO: Replace with javascript on login page
 class LoadingScreen(View):
-    def get(self, request, *args, **kwargs):
+    def get(self, *args, **kwargs):
+        return render(self.request, "loading.html")
+
+    def post(self, *args, **kwargs):
         account = self.protected_login(
             self.request.user.username,
             self.request.session["sis-password"],
             self.request.session["domain"],
         )
-        if isinstance(account, str):
-            print(account)
-            return HttpResponseRedirect(reverse("login-page"))
-        return HttpResponseRedirect(reverse("choose-classes"))
+        error = account if isinstance(account, str) else ""
+        return JsonResponse({"error": error})
 
     def protected_login(self, username: str, password: str, domain: str):
         from sisview.synergy import login
 
         try:
-            return login(
+            login(
                 username=username,
                 password=password,
                 domain=domain,
                 user=self.request.user,
             )
+        except KeyError:
+            return "An internal error occured, contact the maintainers for help!"
         except Exception as e:
             return str(e)

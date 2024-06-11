@@ -6,5 +6,5 @@ from .views import ChooseClasses, LoadingScreen
 
 urlpatterns = [
     path("", ChooseClasses.as_view(), name="choose-classes"),
-    path("loading", LoadingScreen.as_view(), name="loading-screen"),
+    path("loading", LoadingScreen.as_view(), name="loading"),
 ]
