@@ -32,7 +32,7 @@ class ChooseClasses(LoginRequiredMixin, FormView):
         return super().form_valid(form)
 
 
-class LoadingScreen(View):
+class LoadingScreen(LoginRequiredMixin, View):
     def get(self, *args, **kwargs):
         return render(self.request, "loading.html")
 

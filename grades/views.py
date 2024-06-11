@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from django.urls import reverse_lazy
 from django.views.generic import FormView
+from django.shortcuts import get_object_or_404
 
 from sisview.models import Subject
 
@@ -20,7 +21,10 @@ class CalcGrades(FormView):
         """The form_class created."""
         kw = super().get_form_kwargs(*args, **kwargs)
 
-        subject = Subject.objects.get(pk=self.kwargs["course_id"])
+        subject = get_object_or_404(
+            Subject,
+            pk=self.kwargs["course_id"]
+        )
         weights = [x.name for x in subject.weights.all()]
 
         kw["weights"] = weights
@@ -29,17 +33,21 @@ class CalcGrades(FormView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         subject_id = self.kwargs["course_id"]
-        subject = Subject.objects.get(pk=subject_id)
+        subject = get_object_or_404(
+            Subject,
+            pk=subject_id
+        )
         weights = subject.weights.all()
+
+        context["course"] = subject_id
         context["weights"] = [x.name for x in weights]
         context["statuses"] = [x.get_status() for x in weights]
         context["classname"] = subject.name
         context["rows"] = range(3)
         context["fg"] = self.fg if self.fg is not None else subject.get_final_grade({})
-        context["course"] = subject_id
         return context
 
-    def form_valid(self, form):
+    def form_valid(self, form):  # type: ignore
         def pcall(f, *args, **kwargs):
             try:
                 return f(*args, **kwargs)
@@ -48,7 +56,10 @@ class CalcGrades(FormView):
 
         sims = {}
         subject_id = self.kwargs["course_id"]
-        subject = Subject.objects.get(pk=subject_id)
+        subject = get_object_or_404(
+            Subject,
+            pk=subject_id
+        )
 
         for weight in subject.weights.all():
             sims[weight.name] = []
