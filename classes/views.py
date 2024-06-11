@@ -1,8 +1,11 @@
-from django.shortcuts import HttpResponseRedirect
-from django.views.generic import FormView
-from django.views import View
-from django.urls import reverse, reverse_lazy
+from __future__ import annotations
+
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import HttpResponseRedirect
+from django.urls import reverse, reverse_lazy
+from django.views import View
+from django.views.generic import FormView
+
 from .forms import ChooseClass
 
 
@@ -13,14 +16,14 @@ class ChooseClasses(LoginRequiredMixin, FormView):
     course_choosen: int
 
     def get_form_kwargs(self):
-        return super().get_form_kwargs() | { "user": self.request.user }
+        return super().get_form_kwargs() | {"user": self.request.user}
 
     def get_success_url(self):
         return reverse_lazy("grades", args=[self.course_choosen])
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['account'] = self.request.user
+        context["account"] = self.request.user
         return context
 
     def form_valid(self, form):
@@ -38,22 +41,18 @@ class LoadingScreen(View):
         )
         if isinstance(account, str):
             print(account)
-            return HttpResponseRedirect(reverse('login-page'))
-        return HttpResponseRedirect(reverse('choose-classes'))
+            return HttpResponseRedirect(reverse("login-page"))
+        return HttpResponseRedirect(reverse("choose-classes"))
 
-    def protected_login(
-        self,
-        username: str,
-        password: str,
-        domain: str
-    ):
+    def protected_login(self, username: str, password: str, domain: str):
         from sisview.synergy import login
+
         try:
             return login(
                 username=username,
                 password=password,
                 domain=domain,
-                user=self.request.user
+                user=self.request.user,
             )
         except Exception as e:
             return str(e)

@@ -1,15 +1,13 @@
-from django.db import models
-from django.conf import settings
+from __future__ import annotations
 
-__all__ = [
-    "Subject",
-    "Weight"
-]
+from django.conf import settings
+from django.db import models
+
+__all__ = ["Subject", "Weight"]
 
 
 class Weight(models.Model):
-    """A dataclass storing info about
-    a category of a grade
+    """A dataclass storing info about a category of a grade
 
     i.e. if the gradebook was split into Formative/Sumative,
     then Formative/Sumative would be instances of this class.
@@ -25,15 +23,12 @@ class Weight(models.Model):
         name
             Name of the category, i.e. Formative
     """
+
     points = models.FloatField()
     points_possible = models.FloatField()
     percent = models.FloatField()
     name = models.TextField(default="Cumulative")
-    subject = models.ForeignKey(
-        'Subject',
-        on_delete=models.CASCADE,
-        related_name='weights'
-    )
+    subject = models.ForeignKey("Subject", on_delete=models.CASCADE, related_name="weights")
 
     def __str__(self) -> str:
         return str(self.name)
@@ -69,11 +64,12 @@ class Subject(models.Model):
         final_grade
             Calculate the final grade based off of the weights
     """
+
     name = models.TextField()
     account = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        related_name='subjects'
+        related_name="subjects",
     )
 
     def __str__(self) -> str:
@@ -92,15 +88,11 @@ class Subject(models.Model):
             new_points = weight.points
             new_points_possible = weight.points_possible
 
-            inputs = (
-                category_sims[weight.name]
-                if weight.name in category_sims
-                else ()
-            )
+            inputs = category_sims[weight.name] if weight.name in category_sims else ()
 
             for points, possible in inputs:
                 new_points += points
                 new_points_possible += possible
 
             grade += (new_points / new_points_possible) * weight.percent
-        return round(grade*100, 2) if not grade.is_integer() else grade*100
+        return round(grade * 100, 2) if not grade.is_integer() else grade * 100

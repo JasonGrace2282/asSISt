@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from django import forms
 from django.utils.safestring import SafeString
 
@@ -7,10 +9,15 @@ class GradesForm(forms.Form):
         super().__init__(*args, **kwargs)
         for weight in weights:
             for i in range(3):  # todo: make this configurable
-                self.fields[f'{weight}_{i}'] = forms.CharField(
-                required=False,
-                widget=forms.TextInput(attrs={'placeholder': 'points / total', 'class': 'form-control grade-element'})
-            )
+                self.fields[f"{weight}_{i}"] = forms.CharField(
+                    required=False,
+                    widget=forms.TextInput(
+                        attrs={
+                            "placeholder": "points / total",
+                            "class": "form-control grade-element",
+                        }
+                    ),
+                )
 
         self.columns = len(weights)
 
@@ -25,7 +32,7 @@ class GradesForm(forms.Form):
                 continue
             elif "</tr>" in chunk:
                 tr_count += 1
-            if tr_count%self.columns != 0 and chunk in {"<tr>", "</tr>"}:
+            if tr_count % self.columns != 0 and chunk in {"<tr>", "</tr>"}:
                 continue
             final += chunk + "\n"
         return SafeString(final)

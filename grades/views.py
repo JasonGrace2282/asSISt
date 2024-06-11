@@ -1,16 +1,20 @@
-from django.views.generic import FormView
+from __future__ import annotations
+
 from django.urls import reverse_lazy
+from django.views.generic import FormView
+
 from sisview.models import Subject
+
 from .forms import GradesForm
 
 
 class CalcGrades(FormView):
     template_name = "grades.html"
-    success_url = reverse_lazy('choose-classes')
+    success_url = reverse_lazy("choose-classes")
     form_class = GradesForm
 
     fg = None
-    '''Final Grade override'''
+    """Final Grade override"""
 
     def get_form_kwargs(self, *args, **kwargs):
         """The form_class created."""
@@ -27,18 +31,11 @@ class CalcGrades(FormView):
         subject_id = self.kwargs["course_id"]
         subject = Subject.objects.get(pk=subject_id)
         weights = subject.weights.all()
-        context['weights'] = [x.name for x in weights]
-        context['statuses'] = [
-            x.get_status()
-            for x in weights
-        ]
-        context['classname'] = subject.name
-        context['rows'] = range(3)
-        context['fg'] = (
-            self.fg
-            if self.fg is not None
-            else subject.get_final_grade({})
-        )
+        context["weights"] = [x.name for x in weights]
+        context["statuses"] = [x.get_status() for x in weights]
+        context["classname"] = subject.name
+        context["rows"] = range(3)
+        context["fg"] = self.fg if self.fg is not None else subject.get_final_grade({})
         context["course"] = subject_id
         return context
 
@@ -58,9 +55,7 @@ class CalcGrades(FormView):
             for row in range(3):
                 tmp = pcall(
                     lambda x: [float(i) for i in x],
-                    form.cleaned_data[f'{weight.name}_{row}'].replace(
-                        " ", ""
-                    ).split("/")
+                    form.cleaned_data[f"{weight.name}_{row}"].replace(" ", "").split("/"),
                 )
                 if tmp is None or len(tmp) != 2:
                     continue
