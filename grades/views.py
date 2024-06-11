@@ -4,8 +4,6 @@ from django.urls import reverse_lazy
 from django.views.generic import FormView
 from django.shortcuts import get_object_or_404
 
-from sisview.models import Subject
-
 from .forms import GradesForm
 
 
@@ -22,7 +20,7 @@ class CalcGrades(FormView):
         kw = super().get_form_kwargs(*args, **kwargs)
 
         subject = get_object_or_404(
-            Subject,
+            self.request.user.subjects,
             pk=self.kwargs["course_id"]
         )
         weights = [x.name for x in subject.weights.all()]
@@ -34,7 +32,7 @@ class CalcGrades(FormView):
         context = super().get_context_data(**kwargs)
         subject_id = self.kwargs["course_id"]
         subject = get_object_or_404(
-            Subject,
+            self.request.user.subjects,
             pk=subject_id
         )
         weights = subject.weights.all()
@@ -57,7 +55,7 @@ class CalcGrades(FormView):
         sims = {}
         subject_id = self.kwargs["course_id"]
         subject = get_object_or_404(
-            Subject,
+            self.request.user.subjects,
             pk=subject_id
         )
 
