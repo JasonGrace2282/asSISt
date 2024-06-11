@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     "sisview",
     "classes",
-    "grades"
+    "grades",
+    "login",
 ]
 
 MIDDLEWARE = [

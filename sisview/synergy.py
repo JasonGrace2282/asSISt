@@ -1,6 +1,6 @@
 from studentvue import StudentVue
 from collections import OrderedDict
-from .models import Account, Subject
+from .models import Subject
 
 
 class LoginError(Exception):
@@ -11,18 +11,13 @@ class ApiError(Exception):
     pass
 
 
-def login(username: str, password: str, domain: str) -> Account:
+def login(username: str, password: str, domain: str, user):
     gradebook = check_account_success(username, password, domain)
     if isinstance(gradebook, str):
         raise LoginError(gradebook)
 
-    # if login was successfull create account
-    account = Account(name=username)
-    account.save()
-
     for course in gradebook["Courses"]["Course"]:
-        parse_subject(course, account)
-    return account
+        parse_subject(course, user)
 
 
 def check_account_success(
@@ -92,7 +87,7 @@ def parse_unweighted(assignments: list[dict]) -> tuple[float, float]:
 
 def parse_subject(
     courses,  # trying to typehint this is hell
-    account: Account
+    account,
 ) -> None:
     marks = courses["Marks"]["Mark"][0]
     grading_scheme = marks["GradeCalculationSummary"]

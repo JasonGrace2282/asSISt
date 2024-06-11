@@ -1,8 +1,8 @@
 from django.db import models
+from django.conf import settings
 
 __all__ = [
     "Subject",
-    "Account",
     "Weight"
 ]
 
@@ -71,7 +71,7 @@ class Subject(models.Model):
     """
     name = models.TextField()
     account = models.ForeignKey(
-        'Account',
+        settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name='subjects'
     )
@@ -104,12 +104,3 @@ class Subject(models.Model):
 
             grade += (new_points / new_points_possible) * weight.percent
         return round(grade*100, 2) if not grade.is_integer() else grade*100
-
-
-class Account(models.Model):
-    """A user account.
-    """
-    name = models.TextField()
-
-    def __str__(self) -> str:
-        return str(self.name)

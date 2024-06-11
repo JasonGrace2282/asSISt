@@ -2,37 +2,30 @@ from django import forms
 from django.utils.safestring import SafeString
 
 
-    
-def _as_table(self: forms.Form) -> str:
-    table: str = super(type(self), self).as_table()
-    table = table.split("\n")
-    final = ""
-    tr_count = 0
-    for chunk in table:
-        chunk = chunk.strip()
-        if "<label" in chunk:
-            continue
-        elif "</tr>" in chunk:
-            tr_count += 1
-        if tr_count%self.columns != 0 and chunk in {"<tr>", "</tr>"}:
-            continue
-        final += chunk + "\n"
-    return SafeString(final)
-
-def get_grades_form(weights: list[str], columns: int):
-    attrs = {}
-    for weight in weights:
-        for i in range(3):
-            attrs[f'{weight}_{i}'] = forms.CharField(
+class GradesForm(forms.Form):
+    def __init__(self, weights: list[str], *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for weight in weights:
+            for i in range(3):  # todo: make this configurable
+                self.fields[f'{weight}_{i}'] = forms.CharField(
                 required=False,
                 widget=forms.TextInput(attrs={'placeholder': 'points / total', 'class': 'form-control grade-element'})
             )
-    
-    attrs['as_table'] = _as_table
-    attrs['columns'] = columns
-    
-    return type(
-        'GradesForm',
-        (forms.Form, ),
-        attrs
-    )
+
+        self.columns = len(weights)
+
+    def as_table(self) -> SafeString:
+        table = str(super().as_table())
+        table_list = table.split("\n")
+        final = ""
+        tr_count = 0
+        for chunk in table_list:
+            chunk = chunk.strip()
+            if "<label" in chunk:
+                continue
+            elif "</tr>" in chunk:
+                tr_count += 1
+            if tr_count%self.columns != 0 and chunk in {"<tr>", "</tr>"}:
+                continue
+            final += chunk + "\n"
+        return SafeString(final)

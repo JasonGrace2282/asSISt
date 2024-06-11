@@ -1,29 +1,30 @@
 from django.views.generic import FormView
 from django.urls import reverse_lazy
 from sisview.models import Subject
-from .forms import get_grades_form
+from .forms import GradesForm
 
 
 class CalcGrades(FormView):
     template_name = "grades.html"
     success_url = reverse_lazy('choose-classes')
+    form_class = GradesForm
 
     fg = None
     '''Final Grade override'''
 
-    def get_form_class(self):
+    def get_form_kwargs(self, *args, **kwargs):
         """The form_class created."""
-        subject_id = self.request.session.get('SUBJECT')
+        kw = super().get_form_kwargs(*args, **kwargs)
 
-        weights = []
-        subject = Subject.objects.get(pk=subject_id)
-        weights += [x.name for x in subject.weights.all()]
+        subject = Subject.objects.get(pk=self.kwargs["course_id"])
+        weights = [x.name for x in subject.weights.all()]
 
-        return get_grades_form(weights, len(weights))
+        kw["weights"] = weights
+        return kw
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        subject_id = self.request.session.get('SUBJECT')
+        subject_id = self.kwargs["course_id"]
         subject = Subject.objects.get(pk=subject_id)
         weights = subject.weights.all()
         context['weights'] = [x.name for x in weights]
@@ -38,6 +39,7 @@ class CalcGrades(FormView):
             if self.fg is not None
             else subject.get_final_grade({})
         )
+        context["course"] = subject_id
         return context
 
     def form_valid(self, form):
@@ -48,7 +50,7 @@ class CalcGrades(FormView):
                 return None
 
         sims = {}
-        subject_id = self.request.session.get('SUBJECT')
+        subject_id = self.kwargs["course_id"]
         subject = Subject.objects.get(pk=subject_id)
 
         for weight in subject.weights.all():
