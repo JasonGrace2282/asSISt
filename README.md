@@ -3,8 +3,6 @@
 </p>
 
 An app designed to help calculate grades from StudentVUE by Synergy.
-![Screenshot of Application UI](https://github.com/JasonGrace2282/asSISt/assets/110117391/bd5c61d5-c0cc-46f3-885c-4b9fd20b164e)
-
 
 - Native support for weighted gradebooks 💪
 - Blazing fast grade recalculation ⏲️
