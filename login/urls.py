@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from django.urls import path, reverse_lazy
 from django.contrib.auth.views import LogoutView
+from django.urls import path, reverse_lazy
 
 from .views import AssistLoginView
 

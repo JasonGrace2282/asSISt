@@ -56,6 +56,6 @@ class LoadingScreen(View):
                 user=self.request.user,
             )
         except KeyError:
-            return "An internal error occured, contact the maintainers for help!"
+            return "An internal error occurred, contact the maintainers for help!"
         except Exception as e:
             return str(e)
