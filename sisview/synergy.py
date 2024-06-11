@@ -1,6 +1,10 @@
-from studentvue import StudentVue
+from __future__ import annotations
+
 from collections import OrderedDict
-from .models import Account, Subject
+
+from studentvue import StudentVue
+
+from .models import Subject
 
 
 class LoginError(Exception):
@@ -11,38 +15,26 @@ class ApiError(Exception):
     pass
 
 
-def login(username: str, password: str, domain: str) -> Account:
+def login(username: str, password: str, domain: str, user):
     gradebook = check_account_success(username, password, domain)
     if isinstance(gradebook, str):
         raise LoginError(gradebook)
 
-    # if login was successfull create account
-    account = Account(name=username)
-    account.save()
+    if user.subjects.exists():
+        user.subjects.all().delete()
 
     for course in gradebook["Courses"]["Course"]:
-        parse_subject(course, account)
-    return account
+        parse_subject(course, user)
 
 
-def check_account_success(
-    username: str,
-    password: str,
-    domain: str
-) -> OrderedDict:
+def check_account_success(username: str, password: str, domain: str) -> OrderedDict:
     try:
-        gradebook = StudentVue(
-            username,
-            password,
-            domain
-        ).get_gradebook()
+        gradebook = StudentVue(username, password, domain).get_gradebook()
         if gradebook.get("RT_ERROR"):
             return gradebook["RT_ERROR"]["@ERROR_MESSAGE"]
         return gradebook["Gradebook"]
     except KeyError as e:
-        raise LoginError(
-            "Oops, an error occurred with logging in. Incorrect Credentials?"
-        ) from e
+        raise LoginError("Oops, an error occurred with logging in. Incorrect Credentials?") from e
 
 
 def parse_class(
@@ -56,7 +48,7 @@ def parse_class(
         name=weight["@Type"],
         points=weight["@Points"],
         points_possible=weight["@PointsPossible"],
-        percent=int(weight["@Weight"][:-1])/100,  # PERCENT weightage
+        percent=int(weight["@Weight"][:-1]) / 100,  # PERCENT weightage
     )
     category.save()
     return -1  # continue adding weights
@@ -71,15 +63,15 @@ def parse_unweighted(assignments: list[dict]) -> tuple[float, float]:
     points_earned = points_possible = 0
     for assign in assignments:
         if (
-            "Points Possible" in assign["@Points"]
-            or "Not For Grading" in assign["@Notes"]
+            "points possible" in assign["@Points"].lower()
+            or "not for grading" in assign["@Notes"].lower()
         ):
             continue
 
         points, possible_points = map(
             float,
             # parse stuff of form "3 / 4"
-            assign["@Points"].replace(" ", "").split("/")
+            assign["@Points"].replace(" ", "").split("/"),
         )
         # Since it's unweighted it can be represented as a weight
         # with percent=1
@@ -92,7 +84,7 @@ def parse_unweighted(assignments: list[dict]) -> tuple[float, float]:
 
 def parse_subject(
     courses,  # trying to typehint this is hell
-    account: Account
+    account,
 ) -> None:
     marks = courses["Marks"]["Mark"][0]
     grading_scheme = marks["GradeCalculationSummary"]
@@ -113,9 +105,5 @@ def parse_subject(
     points, points_possible = parse_unweighted(
         marks["Assignments"]["Assignment"],  # type: ignore
     )
-    weight = subject.weights.create(
-        points=points,
-        points_possible=points_possible,
-        percent=1
-    )
+    weight = subject.weights.create(points=points, points_possible=points_possible, percent=1)
     weight.save()

@@ -17,7 +17,7 @@
     <div class="container d-flex justify-content-center align-items-center">
         <div class='display-6 text-center text-secondary varela_font'>Grade: {{ fg }}</div>
     </div>
-    <form method="post">
+    <form action="{% url 'grades' course %}" method="post">
         {% csrf_token %}
         <table class="table-dark">
             <thead>
@@ -47,7 +47,7 @@
         </div>
     </form>
     <div class="container d-flex justify-content-center align-items-center">
-        <a href="../">
+    <a href="{% url 'choose-classes' %}">
             <button class="btn btn-lg btn-outline-light">Back</button>
         </a>
     </div>

@@ -1,0 +1,27 @@
+default_stages: [commit, push]
+fail_fast: false
+exclude: ^(static/.*vendor|.*migrations|assist/settings\.py)
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: check-ast
+        name: validate python
+      - id: trailing-whitespace
+      - id: mixed-line-ending
+      - id: check-toml
+      - id: detect-private-key
+      - id: check-yaml
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.3.0
+    hooks:
+      - id: codespell
+        files: ^.*\.(py|md|rst)$
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.4.7
+    hooks:
+      - id: ruff
+        args: [ "--fix", "--exit-non-zero-on-fix" ]
+        name: ruff lint
+      - id: ruff-format

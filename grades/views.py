@@ -1,46 +1,45 @@
-from django.views.generic import FormView
+from __future__ import annotations
+
+from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
-from sisview.models import Subject
-from .forms import get_grades_form
+from django.views.generic import FormView
+
+from .forms import GradesForm
 
 
 class CalcGrades(FormView):
     template_name = "grades.html"
-    success_url = reverse_lazy('choose-classes')
+    success_url = reverse_lazy("choose-classes")
+    form_class = GradesForm
 
     fg = None
-    '''Final Grade override'''
+    """Final Grade override"""
 
-    def get_form_class(self):
+    def get_form_kwargs(self, *args, **kwargs):
         """The form_class created."""
-        subject_id = self.request.session.get('SUBJECT')
+        kw = super().get_form_kwargs(*args, **kwargs)
 
-        weights = []
-        subject = Subject.objects.get(pk=subject_id)
-        weights += [x.name for x in subject.weights.all()]
+        subject = get_object_or_404(self.request.user.subjects, pk=self.kwargs["course_id"])
+        weights = [x.name for x in subject.weights.all()]
 
-        return get_grades_form(weights, len(weights))
+        kw["weights"] = weights
+        return kw
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        subject_id = self.request.session.get('SUBJECT')
-        subject = Subject.objects.get(pk=subject_id)
+        subject_id = self.kwargs["course_id"]
+        subject = get_object_or_404(self.request.user.subjects, pk=subject_id)
         weights = subject.weights.all()
-        context['weights'] = [x.name for x in weights]
-        context['statuses'] = [
-            x.get_status()
-            for x in weights
-        ]
-        context['classname'] = subject.name
-        context['rows'] = range(3)
-        context['fg'] = (
-            self.fg
-            if self.fg is not None
-            else subject.get_final_grade({})
-        )
+
+        context["course"] = subject_id
+        context["weights"] = [x.name for x in weights]
+        context["statuses"] = [x.get_status() for x in weights]
+        context["classname"] = subject.name
+        context["rows"] = range(3)
+        context["fg"] = self.fg if self.fg is not None else subject.get_final_grade({})
         return context
 
-    def form_valid(self, form):
+    def form_valid(self, form):  # type: ignore
         def pcall(f, *args, **kwargs):
             try:
                 return f(*args, **kwargs)
@@ -48,17 +47,15 @@ class CalcGrades(FormView):
                 return None
 
         sims = {}
-        subject_id = self.request.session.get('SUBJECT')
-        subject = Subject.objects.get(pk=subject_id)
+        subject_id = self.kwargs["course_id"]
+        subject = get_object_or_404(self.request.user.subjects, pk=subject_id)
 
         for weight in subject.weights.all():
             sims[weight.name] = []
             for row in range(3):
                 tmp = pcall(
                     lambda x: [float(i) for i in x],
-                    form.cleaned_data[f'{weight.name}_{row}'].replace(
-                        " ", ""
-                    ).split("/")
+                    form.cleaned_data[f"{weight.name}_{row}"].replace(" ", "").split("/"),
                 )
                 if tmp is None or len(tmp) != 2:
                     continue

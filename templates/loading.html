@@ -1,0 +1,40 @@
+{% load static %}
+
+<!DOCTYPE html>
+<head>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/vendor/bootstrap/bootstrap.min.css' %}">
+    <link rel="icon" type="image/x-icon" href="{% static 'synergy_icon.ico' %}">
+    <title>Classes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+</head>
+<body class="bg-dark">
+<div class="container d-flex justify-content-center align-items-center">
+    <div class="text-center">
+      <div class="text-light">
+        <h3>Logging you in...</h3>
+        <span>This may take some time based on your internet</span>
+      </div>
+      <div id="hi"></div>
+    </div>
+</div>
+</body>
+<script>
+    $.post(
+      "{% url 'loading' %}",
+      { csrfmiddlewaretoken: "{{ csrf_token }}" },
+      function(rawdataobj) {
+        const rawdata = JSON.stringify(rawdataobj);
+        const data = JSON.parse(rawdata);
+        if (data["errors"]) {
+          window.location.replace("{% url 'login-page' %}"+"?errors="+data["errors"]);
+        } else {
+          window.location.replace("{% url 'choose-classes' %}");
+        }
+      }
+    )
+</script>
+

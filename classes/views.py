@@ -1,59 +1,61 @@
-from django.shortcuts import HttpResponseRedirect
-from django.views.generic import FormView
+from __future__ import annotations
+
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import JsonResponse
+from django.shortcuts import render
+from django.urls import reverse_lazy
 from django.views import View
-from django.urls import reverse
-from sisview.models import Account
+from django.views.generic import FormView
+
 from .forms import ChooseClass
 
 
-class ChooseClasses(FormView):
+class ChooseClasses(LoginRequiredMixin, FormView):
     template_name = "choose-classes.html"
-    success_url = "grades"
+    form_class = ChooseClass
 
-    def get_form_class(self):
-        form_class = ChooseClass
-        form_class.account = Account.objects.get(
-            pk=self.request.session["account_id"]
-        )
-        return form_class
+    course_choosen: int
+
+    def get_form_kwargs(self):
+        return super().get_form_kwargs() | {"user": self.request.user}
+
+    def get_success_url(self):
+        return reverse_lazy("grades", args=[self.course_choosen])
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
-        account_id = self.request.session["account_id"]
-        account = Account.objects.get(pk=account_id)
-        context['username'] = str(account.name)
+        context["account"] = self.request.user
         return context
 
     def form_valid(self, form):
-        self.request.session['SUBJECT'] = form.cleaned_data['class']
+        self.course_choosen = form.cleaned_data["class"]
         return super().form_valid(form)
 
 
-class LoadingScreen(View):
-    def get(self, request, *args, **kwargs):
-        account = self.protected_login(*[
-            request.session[x]
-            for x in ["username", "password", "domain"]
-        ])
-        if isinstance(account, str):
-            print(account)
-            return HttpResponseRedirect(reverse('login-page'))
-        request.session["account_id"] = account.pk
-        return HttpResponseRedirect(reverse('choose-classes'))
+class LoadingScreen(LoginRequiredMixin, View):
+    def get(self, *args, **kwargs):
+        return render(self.request, "loading.html")
 
-    @staticmethod
-    def protected_login(
-        username: str,
-        password: str,
-        domain: str
-    ) -> Account | str:
+    def post(self, *args, **kwargs):
+        account = self.protected_login(
+            self.request.user.username,
+            self.request.session["sis-password"],
+            self.request.session["domain"],
+        )
+        error = account if isinstance(account, str) else ""
+        return JsonResponse({"error": error})
+
+    def protected_login(self, username: str, password: str, domain: str):
         from sisview.synergy import login
+
         try:
-            return login(
-               username=username,
-               password=password,
-               domain=domain
+            login(
+                username=username,
+                password=password,
+                domain=domain,
+                user=self.request.user,
             )
+        except KeyError:
+            return "An internal error occurred, contact the maintainers for help!"
         except Exception as e:
             return str(e)

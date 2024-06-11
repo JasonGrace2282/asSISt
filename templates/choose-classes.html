@@ -25,9 +25,10 @@
                 <button type="submit" class="btn btn-outline-light btn-lg mt-3"><span
                         class="varela_font">See Class</span></button>
             </form>
-            <a href="../">
-                <button class="btn btn-lg btn-outline-light">Logout</button>
-            </a>
+            <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <input type="submit" class="btn btn-lg btn-outline-light" value="Logout"></input>
+            </form>
         </div>
     </div>
 </div>
