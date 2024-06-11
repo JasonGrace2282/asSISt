@@ -1,8 +1,8 @@
 from __future__ import annotations
 
+from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import FormView
-from django.shortcuts import get_object_or_404
 
 from .forms import GradesForm
 
@@ -19,10 +19,7 @@ class CalcGrades(FormView):
         """The form_class created."""
         kw = super().get_form_kwargs(*args, **kwargs)
 
-        subject = get_object_or_404(
-            self.request.user.subjects,
-            pk=self.kwargs["course_id"]
-        )
+        subject = get_object_or_404(self.request.user.subjects, pk=self.kwargs["course_id"])
         weights = [x.name for x in subject.weights.all()]
 
         kw["weights"] = weights
@@ -31,10 +28,7 @@ class CalcGrades(FormView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         subject_id = self.kwargs["course_id"]
-        subject = get_object_or_404(
-            self.request.user.subjects,
-            pk=subject_id
-        )
+        subject = get_object_or_404(self.request.user.subjects, pk=subject_id)
         weights = subject.weights.all()
 
         context["course"] = subject_id
@@ -54,10 +48,7 @@ class CalcGrades(FormView):
 
         sims = {}
         subject_id = self.kwargs["course_id"]
-        subject = get_object_or_404(
-            self.request.user.subjects,
-            pk=subject_id
-        )
+        subject = get_object_or_404(self.request.user.subjects, pk=subject_id)
 
         for weight in subject.weights.all():
             sims[weight.name] = []
