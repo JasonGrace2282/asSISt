@@ -38,11 +38,10 @@ class LoadingScreen(LoginRequiredMixin, TemplateView):
     def post(self, *args, **kwargs):
         account = self.protected_login(
             self.request.user.username,
-            self.request.session["sis-password"],
-            self.request.session["domain"],
+            self.request.session.pop("sis-password"),
+            self.request.session.pop("domain"),
         )
         error = account if isinstance(account, str) else ""
-        print(error)
         return JsonResponse({"error": error})
 
     def protected_login(self, username: str, password: str, domain: str):
